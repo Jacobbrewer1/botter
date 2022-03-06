@@ -45,6 +45,7 @@ func Start() {
 	if err != nil {
 		log.Println(err)
 	}
+	go runFormulaOne(bot)
 }
 
 func setupComplexStatus() discordgo.UpdateStatusData {
