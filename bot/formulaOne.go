@@ -31,7 +31,7 @@ func runFormulaOne(s *discordgo.Session) {
 		log.Printf("race weekend start date %v\n", t)
 		diff := calculateTimeDifference(t)
 		if diff > 0 {
-			log.Printf("waiting until %v event\n", *race.RaceName)
+			log.Printf("waiting until %v event at %v\n", *race.RaceName, race.GetFridayDate())
 			time.Sleep(diff)
 			log.Println("released from wait")
 		} else if diff < 0 {
