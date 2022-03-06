@@ -43,7 +43,6 @@ func (r Race) GetFridayDate() string {
 		return ""
 	}
 	date := fmt.Sprintf("%vT00:00:00Z", strings.Split(t.Add(-time.Hour*48).String(), " ")[0])
-	log.Println(date)
 	return date
 }
 
@@ -54,7 +53,6 @@ func (r Race) GetSaturdayDate() string {
 		return ""
 	}
 	date := fmt.Sprintf("%vT00:00:00Z", strings.Split(t.Add(-time.Hour*36).String(), " ")[0])
-	log.Println(date)
 	return date
 }
 

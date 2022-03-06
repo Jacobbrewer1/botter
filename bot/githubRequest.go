@@ -30,7 +30,7 @@ func createGithubIssue(s *discordgo.Session, m *discordgo.MessageCreate) error {
 		return err
 	}
 
-	if _, err := sendMessage(s, m, fmt.Sprintf(issue.response, *i.Number, *i.Title, helper.RemoveBoldness(strings.Replace(*i.Body, "\n", "", 1)), *u.Name, *i.HTMLURL)); err != nil {
+	if _, err := sendMessage(s, m.ChannelID, fmt.Sprintf(issue.response, *i.Number, *i.Title, helper.RemoveBoldness(strings.Replace(*i.Body, "\n", "", 1)), *u.Name, *i.HTMLURL)); err != nil {
 		return err
 	}
 	return nil
@@ -55,14 +55,14 @@ func getGithubIssues(s *discordgo.Session, m *discordgo.MessageCreate) error {
 			temp = fmt.Sprintf(listIssues.response, issueNumber+1, *i.Number, *i.Title, issueNotAssignedText, *i.HTMLURL)
 		}
 		if (len(temp)+len(issueString)) > 1999 && issueString != "" {
-			if _, err := sendMessage(s, m, issueString); err != nil {
+			if _, err := sendMessage(s, m.ChannelID, issueString); err != nil {
 				return err
 			}
 			issueString = ""
 		}
 		issueString = issueString + temp + "\n\n"
 	}
-	if _, err := sendMessage(s, m, issueString); err != nil {
+	if _, err := sendMessage(s, m.ChannelID, issueString); err != nil {
 		return err
 	}
 	return nil

@@ -18,18 +18,18 @@ func stickerMessage(s *discordgo.Session, m *discordgo.MessageCreate) error {
 		}
 		if resp := api.DecodeResponse(sticker.Meta.Status); resp.IsOK() {
 			if sticker.Pagination.TotalCount > 0 {
-				if _, err := sendMessage(s, m, chooseRandomSearchGif(sticker), poweredByGiphyResponse); err != nil {
+				if _, err := sendMessage(s, m.ChannelID, chooseRandomSearchGif(sticker), poweredByGiphyResponse); err != nil {
 					return err
 				}
 			} else {
 				log.Println("Response from giphy API was nil")
-				if _, err := sendMessage(s, m, fmt.Sprintf(stickerCommand.secondResponse, message.query)); err != nil {
+				if _, err := sendMessage(s, m.ChannelID, fmt.Sprintf(stickerCommand.secondResponse, message.query)); err != nil {
 					return err
 				}
 				return nil
 			}
 		} else {
-			if _, err := sendMessage(s, m, fmt.Sprintf(apiResponseCodeText, message.query, resp.Code)); err != nil {
+			if _, err := sendMessage(s, m.ChannelID, fmt.Sprintf(apiResponseCodeText, message.query, resp.Code)); err != nil {
 				return err
 			}
 			return nil
@@ -43,18 +43,18 @@ func stickerMessage(s *discordgo.Session, m *discordgo.MessageCreate) error {
 		}
 		if resp := api.DecodeResponse(sticker.Meta.Status); resp.IsOK() {
 			if sticker.Pagination.TotalCount > 0 {
-				if _, err := sendMessage(s, m, chooseRandomTrendingGif(sticker), poweredByGiphyResponse); err != nil {
+				if _, err := sendMessage(s, m.ChannelID, chooseRandomTrendingGif(sticker), poweredByGiphyResponse); err != nil {
 					return err
 				}
 			} else {
 				log.Println("Response from giphy API was nil")
-				if _, err := sendMessage(s, m, fmt.Sprintf(stickerCommand.secondResponse, gifTrendingText)); err != nil {
+				if _, err := sendMessage(s, m.ChannelID, fmt.Sprintf(stickerCommand.secondResponse, gifTrendingText)); err != nil {
 					return err
 				}
 				return nil
 			}
 		} else {
-			if _, err := sendMessage(s, m, fmt.Sprintf(apiResponseCodeText, gifTrendingText, resp.Code)); err != nil {
+			if _, err := sendMessage(s, m.ChannelID, fmt.Sprintf(apiResponseCodeText, gifTrendingText, resp.Code)); err != nil {
 				return err
 			}
 			return nil
@@ -76,18 +76,18 @@ func gifMessage(s *discordgo.Session, m *discordgo.MessageCreate) error {
 		}
 		if resp := api.DecodeResponse(gif.Meta.Status); resp.IsOK() {
 			if gif.Pagination.TotalCount > 0 {
-				if _, err := sendMessage(s, m, chooseRandomSearchGif(gif), poweredByGiphyResponse); err != nil {
+				if _, err := sendMessage(s, m.ChannelID, chooseRandomSearchGif(gif), poweredByGiphyResponse); err != nil {
 					return err
 				}
 			} else {
 				log.Println("Response from giphy API was nil")
-				if _, err := sendMessage(s, m, fmt.Sprintf(gifCommand.secondResponse, message.query)); err != nil {
+				if _, err := sendMessage(s, m.ChannelID, fmt.Sprintf(gifCommand.secondResponse, message.query)); err != nil {
 					return err
 				}
 				return nil
 			}
 		} else {
-			if _, err := sendMessage(s, m, fmt.Sprintf(apiResponseCodeText, message.query, resp.Code)); err != nil {
+			if _, err := sendMessage(s, m.ChannelID, fmt.Sprintf(apiResponseCodeText, message.query, resp.Code)); err != nil {
 				return err
 			}
 			return nil
@@ -101,18 +101,18 @@ func gifMessage(s *discordgo.Session, m *discordgo.MessageCreate) error {
 		}
 		if resp := api.DecodeResponse(gif.Meta.Status); resp.IsOK() {
 			if gif.Pagination.TotalCount > 0 {
-				if _, err := sendMessage(s, m, chooseRandomTrendingGif(gif), poweredByGiphyResponse); err != nil {
+				if _, err := sendMessage(s, m.ChannelID, chooseRandomTrendingGif(gif), poweredByGiphyResponse); err != nil {
 					return err
 				}
 			} else {
 				log.Println("Response from giphy API was nil")
-				if _, err := sendMessage(s, m, fmt.Sprintf(gifCommand.secondResponse, gifTrendingText)); err != nil {
+				if _, err := sendMessage(s, m.ChannelID, fmt.Sprintf(gifCommand.secondResponse, gifTrendingText)); err != nil {
 					return err
 				}
 				return nil
 			}
 		} else {
-			if _, err := sendMessage(s, m, fmt.Sprintf(apiResponseCodeText, gifTrendingText, resp.Code)); err != nil {
+			if _, err := sendMessage(s, m.ChannelID, fmt.Sprintf(apiResponseCodeText, gifTrendingText, resp.Code)); err != nil {
 				return err
 			}
 			return nil

@@ -11,7 +11,6 @@ import (
 
 var (
 	layout = "2006-01-02T15:04:05Z"
-	tn     = time.Now()
 )
 
 // Should be run as a go routine to allow it to run independently to the rest of the bot
@@ -29,11 +28,10 @@ func runFormulaOne(s *discordgo.Session) {
 			log.Println(err)
 			continue
 		}
-		t = tn
 		log.Printf("race weekend start date %v\n", t)
 		diff := calculateTimeDifference(t)
 		if diff > 0 {
-			log.Println("waiting until next event")
+			log.Printf("waiting until %v event\n", *race.RaceName)
 			time.Sleep(diff)
 			log.Println("released from wait")
 		} else if diff < 0 {
@@ -62,7 +60,9 @@ func runWeekend(s *discordgo.Session, r api.Race) {
 		if diff > 0 {
 			log.Println("waiting for practice")
 			time.Sleep(diff)
-			s.ChannelMessageSend("811662158303068221", fmt.Sprintf(genericF1Response, practice, *r.Circuit.CircuitName))
+			if _, err := sendMessage(s, guildSportsChannel, fmt.Sprintf(genericF1Response, practice, *r.Circuit.CircuitName)); err != nil {
+				log.Println(err)
+			}
 			log.Println("practice complete")
 		}
 	}()
@@ -78,7 +78,9 @@ func runWeekend(s *discordgo.Session, r api.Race) {
 		if diff > 0 {
 			log.Println("waiting for qualifying")
 			time.Sleep(diff)
-			s.ChannelMessageSend("811662158303068221", fmt.Sprintf(genericF1Response, qualifying, *r.Circuit.CircuitName))
+			if _, err := sendMessage(s, guildSportsChannel, fmt.Sprintf(genericF1Response, qualifying, *r.Circuit.CircuitName)); err != nil {
+				log.Println(err)
+			}
 			log.Println("qualifying complete")
 		}
 	}()
@@ -95,7 +97,9 @@ func runWeekend(s *discordgo.Session, r api.Race) {
 		if diff > 0 {
 			log.Println("waiting for Race day")
 			time.Sleep(diff)
-			s.ChannelMessageSend("811662158303068221", fmt.Sprintf(raceDayResponse, *r.RaceName))
+			if _, err := sendMessage(s, guildSportsChannel, fmt.Sprintf(raceDayResponse, *r.RaceName)); err != nil {
+				log.Println(err)
+			}
 			log.Println("Race day complete")
 		}
 	}()
@@ -103,7 +107,7 @@ func runWeekend(s *discordgo.Session, r api.Race) {
 }
 
 func calculateTimeDifference(t time.Time) time.Duration {
-	diff := t.Sub(tn)
+	diff := t.Sub(time.Now())
 	log.Println("f1 time difference ", diff)
 	if diff < time.Hour*24 {
 		return 0

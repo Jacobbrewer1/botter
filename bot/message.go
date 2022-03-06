@@ -26,43 +26,43 @@ func botterProcess(s *discordgo.Session, m *discordgo.MessageCreate) {
 	message.cmd, message.query = helper.FormatMessage(m.Content, *config.JsonConfig.BotPrefix)
 	switch message.cmd {
 	case help.trigger:
-		if _, err := sendMessage(s, m, help.response); err != nil {
+		if _, err := sendMessage(s, m.ChannelID, help.response); err != nil {
 			log.Println(err)
 			break
 		}
 		break
 	case bossCommand.trigger:
-		if _, err := sendMessage(s, m, bossCommand.response); err != nil {
+		if _, err := sendMessage(s, m.ChannelID, bossCommand.response); err != nil {
 			log.Println(err)
 			break
 		}
 		break
 	case mrsBossCommand.trigger:
-		if _, err := sendMessage(s, m, mrsBossCommand.response); err != nil {
+		if _, err := sendMessage(s, m.ChannelID, mrsBossCommand.response); err != nil {
 			log.Println(err)
 			break
 		}
 		break
 	case hello.trigger:
-		if _, err := sendMessage(s, m, fmt.Sprintf(hello.response, m.Author.ID)); err != nil {
+		if _, err := sendMessage(s, m.ChannelID, fmt.Sprintf(hello.response, m.Author.ID)); err != nil {
 			log.Println(err)
 			break
 		}
 		break
 	case hi.trigger:
-		if _, err := sendMessage(s, m, fmt.Sprintf(hi.response, m.Author.ID)); err != nil {
+		if _, err := sendMessage(s, m.ChannelID, fmt.Sprintf(hi.response, m.Author.ID)); err != nil {
 			log.Println(err)
 			break
 		}
 		break
 	case hey.trigger:
-		if _, err := sendMessage(s, m, fmt.Sprintf(hey.response, m.Author.ID)); err != nil {
+		if _, err := sendMessage(s, m.ChannelID, fmt.Sprintf(hey.response, m.Author.ID)); err != nil {
 			log.Println(err)
 			break
 		}
 		break
 	case ping.trigger:
-		if _, err := sendMessage(s, m, ping.response); err != nil {
+		if _, err := sendMessage(s, m.ChannelID, ping.response); err != nil {
 			log.Println(err)
 			break
 		}
@@ -72,7 +72,7 @@ func botterProcess(s *discordgo.Session, m *discordgo.MessageCreate) {
 			log.Println(err)
 			break
 		}
-		if _, err := sendMessage(s, m, laugh.response); err != nil {
+		if _, err := sendMessage(s, m.ChannelID, laugh.response); err != nil {
 			log.Println(err)
 			break
 		}
@@ -98,7 +98,7 @@ func botterProcess(s *discordgo.Session, m *discordgo.MessageCreate) {
 		}
 		break
 	case minecraftBrewing.trigger:
-		if _, err := sendMessage(s, m, minecraftBrewing.response); err != nil {
+		if _, err := sendMessage(s, m.ChannelID, minecraftBrewing.response); err != nil {
 			log.Println(err)
 			break
 		}
@@ -188,7 +188,7 @@ func botterProcess(s *discordgo.Session, m *discordgo.MessageCreate) {
 			log.Println(err)
 			break
 		}
-		if _, err := sendMessage(s, m, fmt.Sprintf(serverAdTemplateCommand.response, invite)); err != nil {
+		if _, err := sendMessage(s, m.ChannelID, fmt.Sprintf(serverAdTemplateCommand.response, invite)); err != nil {
 			log.Println(err)
 			break
 		}
@@ -273,7 +273,7 @@ func botterProcess(s *discordgo.Session, m *discordgo.MessageCreate) {
 		}
 		if err := createGithubIssue(s, m); err != nil {
 			log.Println(err)
-			if _, err := sendMessage(s, m, issue.secondResponse); err != nil {
+			if _, err := sendMessage(s, m.ChannelID, issue.secondResponse); err != nil {
 				log.Println(err)
 				break
 			}
@@ -288,7 +288,7 @@ func botterProcess(s *discordgo.Session, m *discordgo.MessageCreate) {
 		break
 	default:
 		log.Println(unknownResponse)
-		if _, err := sendMessage(s, m, unknownResponse); err != nil {
+		if _, err := sendMessage(s, m.ChannelID, unknownResponse); err != nil {
 			log.Println(err)
 			break
 		}
@@ -296,18 +296,18 @@ func botterProcess(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 }
 
-func sendMessage(s *discordgo.Session, m *discordgo.MessageCreate, message string, trailer ...string) (*discordgo.Message, error) {
-	botMessage, err := s.ChannelMessageSend(m.ChannelID, message)
+func sendMessage(s *discordgo.Session, channelId, message string, trailer ...string) (*discordgo.Message, error) {
+	botMessage, err := s.ChannelMessageSend(channelId, message)
 	if trailer != nil {
 		log.Printf("Trailer message: %v\n", trailer)
-		_, err = s.ChannelMessageSend(m.ChannelID, trailer[0])
+		_, err = s.ChannelMessageSend(channelId, trailer[0])
 	}
 	return botMessage, err
 }
 
 func sendWaiterMessage(s *discordgo.Session, m *discordgo.MessageCreate, message string, waiter *sync.WaitGroup) (*discordgo.Message, error) {
 	defer waiter.Done()
-	return sendMessage(s, m, message)
+	return sendMessage(s, m.ChannelID, message)
 }
 
 func sendReactionMessage(s *discordgo.Session, channelId, response string, waiter *sync.WaitGroup) (*discordgo.Message, error) {
