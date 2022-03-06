@@ -46,11 +46,27 @@ func getGithubIssues(s *discordgo.Session, m *discordgo.MessageCreate) error {
 	for issueNumber, i := range issues {
 		temp := ""
 		if i.IsAssigned() {
-			u, err := api.GetUser(*i.Assignee.Login)
-			if err != nil {
-				return err
+			var users string
+			if len(i.Assignees) > 1 {
+				for _, u := range i.Assignees {
+					x, err := api.GetUser(*u.Login)
+					if err != nil {
+						return err
+					}
+					if users == "" {
+						users = *x.Name
+					} else {
+						users = users + ", " + *x.Name
+					}
+				}
+			} else {
+				u, err := api.GetUser(*i.Assignee.Login)
+				if err != nil {
+					return err
+				}
+				users = *u.Name
 			}
-			temp = fmt.Sprintf(listIssues.response, issueNumber+1, *i.Number, *i.Title, *u.Name, *i.HTMLURL)
+			temp = fmt.Sprintf(listIssues.response, issueNumber+1, *i.Number, *i.Title, users, *i.HTMLURL)
 		} else {
 			temp = fmt.Sprintf(listIssues.response, issueNumber+1, *i.Number, *i.Title, issueNotAssignedText, *i.HTMLURL)
 		}
