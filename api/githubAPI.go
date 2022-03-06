@@ -12,9 +12,13 @@ import (
 )
 
 func CreateIssue(title, body string) (Issue, User, error) {
-	u, err := getRandomRepoCollaborator("botter")
+	randomUser, err := getRandomRepoCollaborator("botter")
 	if err != nil {
 		return Issue{ID: nil}, User{ID: nil}, err
+	}
+	u, err := GetUser(*randomUser.Login)
+	if err != nil {
+		return Issue{}, User{}, err
 	}
 	rawJson, err := postBotterIssue(title, body, *u.Login)
 	if err != nil {
