@@ -18,33 +18,14 @@ var (
 	IgnoreInvites      bool
 
 	JsonConfig *JsonConfigStruct
-	ApiSecrets ApiSecretsStruct
+	ApiSecrets *ApiSecretsStruct
 	override   *overrideStruct
 
 	BannedWordsArray []string
 )
 
-type JsonConfigStruct struct {
-	ConfigIpAddress *string `json:"ConfigIpAddress"`
-	BotPrefix       *string `json:"BotPrefix"`
-}
-
-type ApiSecretsStruct struct {
-	BotToken       *string `json:"BotToken"`
-	GithubApiToken *string `json:"GithubApiToken"`
-	GiphyApiToken  *string `json:"GiphyApiToken"`
-}
-
-type overrideStruct struct {
-	Secrets            *ApiSecretsStruct `json:"Secrets"`
-	BotPrefix          *string           `json:"BotPrefix,omitempty"`
-	IgnoreVerification *bool             `json:"IgnoreVerification,omitempty"`
-	IgnoreBadWords     *bool             `json:"IgnoreBadWords,omitempty"`
-	IgnoreInvites      *bool             `json:"IgnoreInvites,omitempty"`
-}
-
 func ReadConfig() error {
-	if exists := findFile("./config/override.json"); exists {
+	if findFile("./config/override.json") {
 		log.Println("Override detected - Reading file")
 
 		file, err := ioutil.ReadFile("./config/override.json")
@@ -59,12 +40,28 @@ func ReadConfig() error {
 			return err
 		}
 
-		ApiSecrets = ApiSecretsStruct{
+		ApiSecrets = &ApiSecretsStruct{
 			BotToken:       override.Secrets.BotToken,
 			GithubApiToken: override.Secrets.GithubApiToken,
 			GiphyApiToken:  override.Secrets.GiphyApiToken,
 		}
 		JsonConfig = new(JsonConfigStruct)
+
+		if findFile("./config/config.json") {
+			log.Println("config.json detected")
+			file, err := ioutil.ReadFile("./config/config.json")
+			if err != nil {
+				return err
+			}
+
+			log.Println(string(file))
+
+			err = json.Unmarshal(file, &JsonConfig)
+			if err != nil {
+				return err
+			}
+		}
+
 		JsonConfig.BotPrefix = override.BotPrefix
 		IgnoreVerification = *override.IgnoreVerification
 		IgnoreInvites = *override.IgnoreInvites
@@ -91,7 +88,7 @@ func ReadConfig() error {
 		if err != nil {
 			return err
 		}
-		ApiSecrets = a
+		ApiSecrets = &a
 	}
 
 	log.Printf("Bot prefix: %v", *JsonConfig.BotPrefix)

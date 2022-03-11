@@ -1,4 +1,9 @@
 {
   "BotPrefix": ".",
-  "ConfigIpAddress": "192.168.1.41:8080"
+  "ConfigIpAddress": "192.168.1.41:8080",
+  "Endpoints": {
+    "GithubApiEndpoint": "https://api.github.com/",
+    "GiphyApiEndpoint": "https://api.giphy.com/v1/",
+    "FormulaOneApiEndpoint": "http://ergast.com/api/"
+  }
 }

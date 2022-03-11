@@ -12,7 +12,7 @@ import (
 )
 
 func CreateIssue(title, body string) (Issue, User, error) {
-	randomUser, err := getRandomRepoCollaborator("botter")
+	randomUser, err := getRandomRepoCollaborator("Jacobbrewer1/botter")
 	if err != nil {
 		return Issue{ID: nil}, User{ID: nil}, err
 	}
@@ -40,7 +40,7 @@ func GetUser(logon string) (User, error) {
 }
 
 func GetRepoCollaborators(repo string) ([]User, error) {
-	rawJson, err := requestGithub(fmt.Sprintf("repos/Jacobbrewer1/%v/collaborators", repo))
+	rawJson, err := requestGithub(fmt.Sprintf("repos/%v/collaborators", repo))
 	if err != nil {
 		return nil, err
 	}
@@ -48,7 +48,7 @@ func GetRepoCollaborators(repo string) ([]User, error) {
 }
 
 func GetBranches(repo string) ([]Branch, error) {
-	rawJson, err := requestGithub(fmt.Sprintf("repos/Jacobbrewer1/%v/branches", repo))
+	rawJson, err := requestGithub(fmt.Sprintf("repos/%v/branches", repo))
 	if err != nil {
 		return nil, err
 	}
@@ -68,7 +68,7 @@ func decodeMultiBranch(rawJson json.RawMessage) ([]Branch, error) {
 }
 
 func getRandomRepoCollaborator(repo string) (User, error) {
-	rawJson, err := requestGithub(fmt.Sprintf("repos/Jacobbrewer1/%v/collaborators", repo))
+	rawJson, err := requestGithub(fmt.Sprintf("repos/%v/collaborators", repo))
 	if err != nil {
 		return User{ID: nil}, err
 	}
@@ -172,7 +172,7 @@ func postBotterIssue(title, bodyString, assignee string) (json.RawMessage, error
 		return nil, err
 	}
 
-	req, err := http.NewRequest("POST", "https://api.github.com/repos/Jacobbrewer1/botter/issues", bytes.NewReader(body))
+	req, err := http.NewRequest("POST", *config.JsonConfig.Endpoints.GithubApiEndpoint+"repos/Jacobbrewer1/botter/issues", bytes.NewReader(body))
 	if err != nil {
 		return nil, err
 	}
@@ -188,7 +188,7 @@ func postBotterIssue(title, bodyString, assignee string) (json.RawMessage, error
 }
 
 func requestGithub(endpoint string) (json.RawMessage, error) {
-	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("https://api.github.com/%v", endpoint), nil)
+	req, err := http.NewRequest(http.MethodGet, *config.JsonConfig.Endpoints.GithubApiEndpoint+endpoint, nil)
 	if err != nil {
 		return nil, err
 	}
