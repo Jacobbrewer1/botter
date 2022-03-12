@@ -1,6 +1,9 @@
 package api
 
 import (
+	"encoding/json"
+	"github.com/Jacobbrewer1/botter/config"
+	"io/ioutil"
 	"log"
 	"testing"
 )
@@ -10,6 +13,17 @@ func TestGetNextRace(t *testing.T) {
 		name string
 	}{
 		{"Test One"},
+	}
+
+	file, err := ioutil.ReadFile("../config/config.json")
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	err = json.Unmarshal(file, &config.JsonConfig)
+	if err != nil {
+		log.Println(err)
+		return
 	}
 
 	for _, tt := range tests {
