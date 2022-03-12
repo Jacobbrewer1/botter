@@ -8,9 +8,11 @@ type (
 	}
 
 	ApiSecretsStruct struct {
-		BotToken       *string `json:"BotToken"`
-		GithubApiToken *string `json:"GithubApiToken"`
-		GiphyApiToken  *string `json:"GiphyApiToken"`
+		BotToken               *string `json:"BotToken"`
+		GithubApiToken         *string `json:"GithubApiToken"`
+		GiphyApiToken          *string `json:"GiphyApiToken"`
+		JdoodleApiClientId     *string `json:"JdoodleApiClientId"`
+		JdoodleApiClientSecret *string `json:"JdoodleApiClientSecret"`
 	}
 
 	overrideStruct struct {
@@ -25,5 +27,6 @@ type (
 		GithubApiEndpoint     *string `json:"GithubApiEndpoint,omitempty"`
 		GiphyApiEndpoint      *string `json:"GiphyApiEndpoint,omitempty"`
 		FormulaOneApiEndpoint *string `json:"FormulaOneApiEndpoint,omitempty"`
+		JdoodleApiEndpoint    *string `json:"JdoodleApiEndpoint,omitempty"`
 	}
 )
