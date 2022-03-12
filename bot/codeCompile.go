@@ -18,10 +18,58 @@ type langStruct struct {
 var (
 	langMap = map[string]langStruct{
 		"golang": golang,
+		"java":   java,
+		"c":      c,
+		"c99":    c99,
+		"cpp":    cpp,
+		"cpp14":  cpp14,
+		"cpp17":  cpp17,
+		"php":    php,
+		"perl":   perl,
 	}
 
 	golang = langStruct{
 		languageCode: "go",
+		index:        "4",
+	}
+
+	java = langStruct{
+		languageCode: "java",
+		index:        "4",
+	}
+
+	c = langStruct{
+		languageCode: "c",
+		index:        "5",
+	}
+
+	c99 = langStruct{
+		languageCode: "c99",
+		index:        "4",
+	}
+
+	cpp = langStruct{
+		languageCode: "cpp",
+		index:        "5",
+	}
+
+	cpp14 = langStruct{
+		languageCode: "cpp14",
+		index:        "1",
+	}
+
+	cpp17 = langStruct{
+		languageCode: "cpp17",
+		index:        "1",
+	}
+
+	php = langStruct{
+		languageCode: "php",
+		index:        "4",
+	}
+
+	perl = langStruct{
+		languageCode: "perl",
 		index:        "4",
 	}
 )
@@ -63,9 +111,9 @@ Memory Used %v`, r, *result.CpuTime, *result.Memory)
 }
 
 func compileHelp(s *discordgo.Session, i *discordgo.MessageReactionAdd) {
-	if _, err := sendMessage(s, i.ChannelID, "By hitting the play button, you will send the code off to be executed " +
-		"and tested. The result will then be returned to you.\n" +
-		"One thing to note is that the code is complied as one continuous line so" +
+	if _, err := sendMessage(s, i.ChannelID, "By hitting the play button, you will send the code off to be executed "+
+		"and tested. The result will then be returned to you.\n"+
+		"One thing to note is that the code is complied as one continuous line so"+
 		"take this into account when running your code"); err != nil {
 		log.Println(err)
 		return
