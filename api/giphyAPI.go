@@ -26,7 +26,7 @@ const (
 // https://giphy.com/embed/dyp02B1LtyGWF6rgsv - Powered by giphy gif
 
 func TrendingSearch(endpoint string) (Trending, error) {
-	url := "https://api.giphy.com/v1/" + endpoint + "/trending?api_key=" + *config.ApiSecrets.GiphyApiToken
+	url := *config.JsonConfig.Endpoints.GiphyApiEndpoint + endpoint + "/trending?api_key=" + *config.ApiSecrets.GiphyApiToken
 	rawJson, err := getResponse(url)
 	if err != nil {
 		log.Println(err)
@@ -42,7 +42,7 @@ func SearchQuery(endpoint, tempSearch string) (Search, error) {
 		search = tempSearch
 	}
 	log.Printf("Search query: %v", search)
-	url := "https://api.giphy.com/v1/" + endpoint + "/search?api_key=" + *config.ApiSecrets.GiphyApiToken + "&q=" + search
+	url := *config.JsonConfig.Endpoints.GiphyApiEndpoint + endpoint + "/search?api_key=" + *config.ApiSecrets.GiphyApiToken + "&q=" + search
 	log.Printf("API url: %v\n", url)
 	rawJson, err := getResponse(url)
 	if err != nil {

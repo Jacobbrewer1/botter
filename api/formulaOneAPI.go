@@ -2,7 +2,7 @@ package api
 
 import (
 	"encoding/json"
-	"fmt"
+	"github.com/Jacobbrewer1/botter/config"
 	"io/ioutil"
 	"net/http"
 )
@@ -28,7 +28,7 @@ func decodeGrandPix(rawJson json.RawMessage) (MRDataStruct, error) {
 }
 
 func fetchFormulaOneApi(endpoint string) (json.RawMessage, error) {
-	req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("http://ergast.com/api/%v", endpoint), nil)
+	req, err := http.NewRequest(http.MethodGet, *config.JsonConfig.Endpoints.FormulaOneApiEndpoint+endpoint, nil)
 	if err != nil {
 		return nil, err
 	}

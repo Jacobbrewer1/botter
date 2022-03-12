@@ -39,6 +39,8 @@ const (
 	greenEmbed = 3066993
 
 	// Emojis
+	runReactionEmoji    = "\U000025B6" // Play button
+	helpReactionEmoji   = "\U00002754" // Question mark
 	faceWithTongueEmoji = "\U0001F61B"
 	joyEmoji            = "\U0001F602"
 	controllerEmoji     = "\U0001F3AE"
