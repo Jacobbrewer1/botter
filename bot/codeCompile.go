@@ -27,16 +27,20 @@ var (
 )
 
 func containsCode(msg string) bool {
-	return strings.Count(msg, "```") == 2
+	_, l := getCode(msg)
+	return strings.Count(msg, "```") == 2 && langMap[l].languageCode != ""
 }
 
-func runCompile(s *discordgo.Session, m *discordgo.Message) {
-	n := helper.RemoveNewLines(helper.RemoveTab(m.Content))
+func getCode(input string) (string, string) {
+	n := helper.RemoveNewLines(helper.RemoveTab(input))
 	n = n[strings.Index(n, "```")+3:]
 	n = n[:strings.Index(n, "```")]
 	slice := strings.Split(n, " ")
-	language := slice[0]
-	n = strings.Join(slice[1:], " ")
+	return strings.Join(slice[1:], " "), slice[0]
+}
+
+func runCompile(s *discordgo.Session, m *discordgo.Message) {
+	n, language := getCode(m.Content)
 	log.Println("code extracted from message: " + n)
 	result, err := api.RunCode(createCompileStruct(n, language))
 	if err != nil {
