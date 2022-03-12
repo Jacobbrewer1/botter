@@ -84,7 +84,8 @@ func getCode(input string) (string, string) {
 	n = n[strings.Index(n, "```")+3:]
 	n = n[:strings.Index(n, "```")]
 	slice := strings.Split(n, " ")
-	return strings.Join(slice[1:], " "), slice[0]
+	x := strings.Join(slice[1:], " ")
+	return x[:len(x)-1], slice[0]
 }
 
 func runCompile(s *discordgo.Session, m *discordgo.Message) {
