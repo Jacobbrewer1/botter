@@ -407,5 +407,16 @@ func generateInvite(s *discordgo.Session) (string, error) {
 }
 
 func addReaction(s *discordgo.Session, channelId, msgId, emoji string) error {
+	log.Printf("adding reaction %v to message %v\n", emoji, msgId)
 	return s.MessageReactionAdd(channelId, msgId, emoji)
+}
+
+func removeSingleEmojiReaction(s *discordgo.Session, channelId, msgId, emoji string) error {
+	log.Printf("removing emoji %v from emssage %v\n", emoji, msgId)
+	return s.MessageReactionsRemoveEmoji(channelId, msgId, emoji)
+}
+
+func removeAllMessageReactions(s *discordgo.Session, channelId, msgId string) error {
+	log.Println("removing all emojis from message " + msgId)
+	return s.MessageReactionsRemoveAll(channelId, msgId)
 }

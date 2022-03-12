@@ -49,6 +49,10 @@ func runCompile(s *discordgo.Session, m *discordgo.Message) {
 	}
 }
 
+func compileHelp(s *discordgo.Session, m *discordgo.Message) {
+
+}
+
 func createCompileStruct(code, language string) api.ExecuteInput {
 	s := langMap[language]
 	return api.ExecuteInput{
@@ -61,8 +65,12 @@ func createCompileStruct(code, language string) api.ExecuteInput {
 }
 
 func reactToCodeMessage(s *discordgo.Session, m *discordgo.MessageCreate) {
-	err := s.MessageReactionAdd(m.ChannelID, m.ID, runReactionEmoji)
-	if err != nil {
+	if err := addReaction(s, m.ChannelID, m.ID, runReactionEmoji); err != nil {
 		log.Println(err)
+		return
+	}
+	if err := addReaction(s, m.ChannelID, m.ID, helpReactionEmoji); err != nil {
+		log.Println(err)
+		return
 	}
 }
