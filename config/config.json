@@ -4,6 +4,7 @@
   "Endpoints": {
     "GithubApiEndpoint": "https://api.github.com/",
     "GiphyApiEndpoint": "https://api.giphy.com/v1/",
-    "FormulaOneApiEndpoint": "http://ergast.com/api/"
+    "FormulaOneApiEndpoint": "http://ergast.com/api/",
+    "JdoodleApiEndpoint": "https://api.jdoodle.com/v1/execute"
   }
 }

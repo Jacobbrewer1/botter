@@ -5,10 +5,12 @@ import (
 	"encoding/json"
 	"github.com/Jacobbrewer1/botter/config"
 	"io/ioutil"
+	"log"
 	"net/http"
 )
 
 func RunCode(exec ExecuteInput) (ExecuteOutput, error) {
+	log.Println("running code in compiler")
 	rawJson, err := requestCompile(exec)
 	if err != nil {
 		return ExecuteOutput{}, err
