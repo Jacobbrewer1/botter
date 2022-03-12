@@ -12,7 +12,7 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 		return
 	}
 
-	log.Printf("Message input: %v: %v", m.Author, m.Content)
+	log.Printf("message input: %v: %v", m.Author, m.Content)
 	if memeChannel(m) {
 		laughAtMessage(s, m)
 	}
@@ -25,21 +25,39 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 		return
 	}
 
+	if containsCode(m.Content) {
+		reactToCodeMessage(s, m)
+	}
+
 	if m.Content[0:1] == *config.JsonConfig.BotPrefix {
-		log.Printf("Command received: %v", m.Content)
+		log.Printf("command received: %v", m.Content)
 		botterProcess(s, m)
 	}
 	return
 }
 
 func reactionAddHandler(s *discordgo.Session, i *discordgo.MessageReactionAdd) {
-	log.Println("Reaction received")
+	log.Println("reaction received")
+
+	if i.UserID == botId {
+		log.Println("botter reaction")
+		return
+	}
+
 	runCustom, staticMessage := reactionAddFilter(i)
 	if staticMessage {
 		giveMemberRole(s, i)
 	}
 	if runCustom {
 		giveReactionCustom(s, i)
+	}
+	m, err := s.ChannelMessage(i.ChannelID, i.MessageID)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	if containsCode(m.Content) {
+		runCompile(s, m)
 	}
 	return
 }

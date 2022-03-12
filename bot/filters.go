@@ -153,10 +153,6 @@ func bannedWordsFilter(message string) bool {
 }
 
 func reactionAddFilter(i *discordgo.MessageReactionAdd) (bool, bool) {
-	if i.UserID == botId {
-		log.Println("Botter reaction")
-		return false, false
-	}
 	if i.MessageID == verificationMessageId {
 		log.Println("Reaction to verification message")
 		return false, true
