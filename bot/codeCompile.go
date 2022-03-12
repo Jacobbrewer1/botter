@@ -75,8 +75,11 @@ var (
 )
 
 func containsCode(msg string) bool {
-	_, l := getCode(msg)
-	return strings.Count(msg, "```") == 2 && langMap[l].languageCode != ""
+	if strings.Count(msg, "```") > 0 {
+		_, l := getCode(msg)
+		return strings.Count(msg, "```") == 2 && langMap[l].languageCode != ""
+	}
+	return false
 }
 
 func getCode(input string) (string, string) {
