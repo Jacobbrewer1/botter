@@ -58,8 +58,14 @@ Memory Used %v`, r, *result.CpuTime, *result.Memory)
 	}
 }
 
-func compileHelp(s *discordgo.Session, m *discordgo.Message) {
-
+func compileHelp(s *discordgo.Session, i *discordgo.MessageReactionAdd) {
+	if _, err := sendMessage(s, i.ChannelID, "By hitting the play button, you will send the code off to be executed " +
+		"and tested. The result will then be returned to you.\n" +
+		"One thing to note is that the code is complied as one continuous line so" +
+		"take this into account when running your code"); err != nil {
+		log.Println(err)
+		return
+	}
 }
 
 func createCompileStruct(code, language string) api.ExecuteInput {

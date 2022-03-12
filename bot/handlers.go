@@ -64,7 +64,11 @@ func reactionAddHandler(s *discordgo.Session, i *discordgo.MessageReactionAdd) {
 			}
 			runCompile(s, m)
 		} else if i.Emoji.APIName() == helpReactionEmoji {
-			compileHelp(s, m)
+			if err := removeSingleEmojiReaction(s, i.ChannelID, i.MessageID, helpReactionEmoji); err != nil {
+				log.Println(err)
+				return
+			}
+			compileHelp(s, i)
 		}
 	}
 	return
