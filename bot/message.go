@@ -412,7 +412,7 @@ func addReaction(s *discordgo.Session, channelId, msgId, emoji string) error {
 }
 
 func removeSingleEmojiReaction(s *discordgo.Session, channelId, msgId, emoji string) error {
-	log.Printf("removing emoji %v from emssage %v\n", emoji, msgId)
+	log.Printf("removing emoji %v from message %v\n", emoji, msgId)
 	return s.MessageReactionsRemoveEmoji(channelId, msgId, emoji)
 }
 

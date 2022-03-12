@@ -1,6 +1,7 @@
 package bot
 
 import (
+	"fmt"
 	"github.com/Jacobbrewer1/botter/api"
 	"github.com/Jacobbrewer1/botter/config"
 	"github.com/Jacobbrewer1/botter/helper"
@@ -43,7 +44,15 @@ func runCompile(s *discordgo.Session, m *discordgo.Message) {
 		return
 	}
 	log.Printf("result recieved: %v\n", result)
-	if _, err := sendMessage(s, m.ChannelID, *result.Output); err != nil {
+	r := *result.Output
+	r = r[:len(r)-1] // Removes the new line added by the response by Jdoodle
+	var embed discordgo.MessageEmbed
+	embed.Title = "Code Results"
+	embed.Color = blueEmbed
+	embed.Description = fmt.Sprintf(`Output: %v
+CPU Time: %v
+Memory Used %v`, r, *result.CpuTime, *result.Memory)
+	if _, err := s.ChannelMessageSendEmbed(m.ChannelID, &embed); err != nil {
 		log.Println(err)
 		return
 	}
