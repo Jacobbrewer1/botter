@@ -38,20 +38,61 @@ func TestGetNextRace(t *testing.T) {
 }
 
 func TestFetchFormulaOneApi(t *testing.T) {
+	file, err := ioutil.ReadFile("../config/config.json")
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	err = json.Unmarshal(file, &config.JsonConfig)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
 	tests := []struct {
 		name     string
 		endpoint string
 	}{
-		{"Test One", "f1/current/next.json"},
+		{"next race", nextF1RaceEndpoint},
+		{"driver standings", currentF1DriverStandingsEndpoint},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			rawJson, err := fetchFormulaOneApi(tt.endpoint)
+			_, err := fetchFormulaOneApi(tt.endpoint)
 			if err != nil {
-				t.Errorf(err.Error())
+				t.Errorf("fetchFormulaOneApi(tt.endpoint) error = %v", err)
 			}
-			log.Println(string(rawJson))
+		})
+	}
+}
+
+func TestGetDriverStandings(t *testing.T) {
+	file, err := ioutil.ReadFile("../config/config.json")
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	err = json.Unmarshal(file, &config.JsonConfig)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	tests := []struct {
+		name     string
+	}{
+		{"test one"},
+		{"test two"},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			x, err := GetDriverStandings()
+			if err != nil {
+				t.Errorf("GetDriverStandings() error = %v", err)
+			}
+			log.Println(x)
 		})
 	}
 }

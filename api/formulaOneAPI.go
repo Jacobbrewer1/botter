@@ -7,10 +7,13 @@ import (
 	"net/http"
 )
 
-const nextF1Endpoint = "f1/current/next.json"
+const (
+	nextF1RaceEndpoint               = "f1/current/next.json"
+	currentF1DriverStandingsEndpoint = "f1/current/driverStandings.json"
+)
 
 func GetNextRace() (Race, error) {
-	rawJson, err := fetchFormulaOneApi(nextF1Endpoint)
+	rawJson, err := fetchFormulaOneApi(nextF1RaceEndpoint)
 	if err != nil {
 		return Race{}, err
 	}
@@ -18,13 +21,27 @@ func GetNextRace() (Race, error) {
 	if err != nil {
 		return Race{}, err
 	}
-	return *gp.GrandPix.RaceTable.Races[0], nil
+	return *gp.RaceTable.Races[0], nil
 }
 
-func decodeGrandPix(rawJson json.RawMessage) (MRDataStruct, error) {
-	var g MRDataStruct
+func decodeGrandPix(rawJson json.RawMessage) (GrandPixMRDataStruct, error) {
+	var g GrandPixMRDataStruct
 	err := json.Unmarshal(rawJson, &g)
 	return g, err
+}
+
+func GetDriverStandings() (DriverStandingsStruct, error) {
+	rawJson, err := fetchFormulaOneApi(currentF1DriverStandingsEndpoint)
+	if err != nil {
+		return DriverStandingsStruct{}, err
+	}
+	return decodeDriverStandings(rawJson)
+}
+
+func decodeDriverStandings(rawJson json.RawMessage) (DriverStandingsStruct, error) {
+	var d DriverStandingsMRDataStruct
+	err := json.Unmarshal(rawJson, &d)
+	return *d.DriverStandingsStruct, err
 }
 
 func fetchFormulaOneApi(endpoint string) (json.RawMessage, error) {
