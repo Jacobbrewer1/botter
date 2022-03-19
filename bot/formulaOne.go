@@ -3,6 +3,7 @@ package bot
 import (
 	"fmt"
 	"github.com/Jacobbrewer1/botter/api"
+	"github.com/Jacobbrewer1/botter/helper"
 	"github.com/bwmarrin/discordgo"
 	"log"
 	"sync"
@@ -29,7 +30,7 @@ func runFormulaOne(s *discordgo.Session) {
 			continue
 		}
 		log.Printf("race weekend start date %v\n", t)
-		diff := calculateTimeDifference(t)
+		diff := helper.CalculateTimeDifference(t, time.Now().UTC())
 		if diff > 0 {
 			log.Printf("waiting until %v event at %v\n", *race.RaceName, race.GetFridayDate())
 			time.Sleep(diff)
@@ -104,13 +105,4 @@ func runWeekend(s *discordgo.Session, r api.Race) {
 		}
 	}()
 	waiter.Wait()
-}
-
-func calculateTimeDifference(t time.Time) time.Duration {
-	diff := t.Sub(time.Now())
-	log.Println("f1 time difference ", diff)
-	if diff < time.Hour*24 {
-		return 0
-	}
-	return diff
 }

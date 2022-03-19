@@ -2,6 +2,7 @@ package helper
 
 import (
 	"testing"
+	"time"
 )
 
 func TestFormatIdFromMention(t *testing.T) {
@@ -93,6 +94,30 @@ func TestRemoveNonAlphaChars(t *testing.T) {
 			gotString := RemoveNonAlphaChars(tt.input)
 			if gotString != tt.expected {
 				t.Errorf("RemoveMultiSpaces(tt.input) = %v, expected %v", gotString, tt.expected)
+			}
+		})
+	}
+}
+
+func TestCalculateTimeDifference(t *testing.T) {
+	tests := []struct {
+		name     string
+		inputOne    time.Time
+		inputTwo time.Time
+		expected time.Duration
+	}{
+		{"hour", time.Now().UTC().Add(time.Hour), time.Now().UTC(), time.Hour},
+		{"thirty mins", time.Now().UTC().Add(time.Minute*30), time.Now().UTC(), time.Minute*30},
+		{"5 secs", time.Now().UTC().Add(time.Second*5), time.Now().UTC(), time.Second*5},
+		{"passed by one hour", time.Now().UTC().Add(-time.Hour), time.Now().UTC(), -time.Hour},
+		{"passed by ten mins", time.Now().UTC().Add(-time.Minute*10), time.Now().UTC(), -time.Minute*10},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			gotTime := CalculateTimeDifference(tt.inputOne, tt.inputTwo)
+			if gotTime != tt.expected {
+				t.Errorf("CalculateTimeDifference(tt.inputOne, tt.inputTwo) = %v, expected %v", gotTime, tt.expected)
 			}
 		})
 	}
