@@ -60,7 +60,7 @@ const (
 	issueNotAssignedText = "Issue not assigned"
 
 	// Formula 1 responses
-	genericF1Response  = "It's %v at the %v"
+	genericF1Response  = "It's %v at the %v today"
 	raceDayResponse    = "It's race day at the %v"
 	practice           = "Practice"
 	qualifying         = "Qualifying"

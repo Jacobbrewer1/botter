@@ -55,7 +55,7 @@ func runWeekend(s *discordgo.Session, r api.Race) {
 			log.Println(err)
 			return
 		}
-		t.Add(time.Hour * 9)
+		t = t.Add(time.Hour * 9)
 		diff := t.Sub(time.Now())
 		if diff > 0 {
 			log.Println("waiting for practice")
@@ -73,7 +73,7 @@ func runWeekend(s *discordgo.Session, r api.Race) {
 			log.Println(err)
 			return
 		}
-		t.Add(time.Hour * 9)
+		t = t.Add(time.Hour * 9)
 		diff := t.Sub(time.Now())
 		if diff > 0 {
 			log.Println("waiting for qualifying")
@@ -92,7 +92,7 @@ func runWeekend(s *discordgo.Session, r api.Race) {
 			log.Println(err)
 			return
 		}
-		t.Add(time.Hour * 9)
+		t = t.Add(time.Hour * 9)
 		diff := t.Sub(time.Now())
 		if diff > 0 {
 			log.Println("waiting for Race day")
