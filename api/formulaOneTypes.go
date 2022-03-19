@@ -3,6 +3,7 @@ package api
 import (
 	"fmt"
 	"log"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -103,6 +104,16 @@ type (
 		Nationality   *string `json:"nationality,omitempty"`
 	}
 )
+
+func (s StandingsListsStruct) GetPosition(p int) *DriverStandingPositionStruct {
+	position := strconv.Itoa(p)
+	for _, i := range s.DriverStandings {
+		if *i.Position == position {
+			return i
+		}
+	}
+	return &DriverStandingPositionStruct{}
+}
 
 func (r Race) GetFridayDate() string {
 	t, err := time.Parse("2006-01-02", *r.Date)

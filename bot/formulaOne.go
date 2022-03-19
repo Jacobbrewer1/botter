@@ -14,6 +14,35 @@ var (
 	layout = "2006-01-02T15:04:05Z"
 )
 
+func driverStandings(s *discordgo.Session, m *discordgo.MessageCreate) {
+	standings, err := api.GetDriverStandings()
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	text := fmt.Sprintf("Season - %v", *standings.StandingsTable.Season)
+	for _, d := range standings.StandingsTable.StandingsLists[0].DriverStandings {
+		text = text + "\n"
+		tmp := fmt.Sprintf("%v - %v", *d.Position, *d.Driver.FamilyName)
+		text = text + tmp
+	}
+
+	var e = discordgo.MessageEmbed{
+		Title:       "Formula 1 Driver Standings",
+		Description: text,
+		Color:       redEmbed,
+	}
+	msg, err := s.ChannelMessageSendEmbed(m.ChannelID, &e)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	if err := addReaction(s, msg.ChannelID, msg.ID, racingCarEmoji); err != nil {
+		log.Println(err)
+		return
+	}
+}
+
 // Should be run as a go routine to allow it to run independently to the rest of the bot
 // i.e. go runFormulaOne
 func runFormulaOne(s *discordgo.Session) {
