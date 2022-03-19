@@ -47,6 +47,7 @@ const (
 	sleepEmoji          = "\U0001F634"
 	redEmoji            = "\U0001F534"
 	blueEmoji           = "\U0001F535"
+	racingCarEmoji      = "\U0001F3CE"
 
 	// Server emojis
 	pikaHi = "<a:pikaHi:828930215522729985>"
@@ -61,7 +62,7 @@ const (
 
 	// Formula 1 responses
 	genericF1Response  = "It's %v at the %v today"
-	raceDayResponse    = "It's race day at the %v"
+	raceDayResponse    = "It's race day at the %v in 1 hours time!"
 	practice           = "Practice"
 	qualifying         = "Qualifying"
 	guildSportsChannel = "811662158303068221"
