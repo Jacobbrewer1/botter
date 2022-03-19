@@ -83,7 +83,7 @@ func containsCode(msg string) bool {
 }
 
 func getCode(input string) (string, string) {
-	n := helper.RemoveNewLines(helper.RemoveTab(input))
+	n := helper.RemoveMultiSpaces(helper.RemoveNewLines(helper.RemoveTab(input)))
 	n = n[strings.Index(n, "```")+3:]
 	n = n[:strings.Index(n, "```")]
 	slice := strings.Split(n, " ")

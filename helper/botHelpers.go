@@ -5,6 +5,7 @@ import (
 	"log"
 	"regexp"
 	"strings"
+	"time"
 )
 
 func FormatIdFromMention(id string) (string, error) {
@@ -80,13 +81,19 @@ func FormatStrings(text string) string {
 }
 
 func RemoveNewLines(text string) string {
-	return RemoveMultiSpaces(strings.ReplaceAll(text, "\n", " "))
+	return strings.ReplaceAll(text, "\n", " ")
 }
 
 func RemoveTab(text string) string {
-	return RemoveMultiSpaces(strings.ReplaceAll(text, "\t", " "))
+	return strings.ReplaceAll(text, "\t", " ")
 }
 
 func RemoveBoldness(text string) string {
 	return strings.ReplaceAll(text, "*", "")
+}
+
+func CalculateTimeDifference(t, tTwo time.Time) time.Duration {
+	diff := t.Sub(tTwo)
+	log.Println("time difference ", diff)
+	return diff
 }
