@@ -71,15 +71,24 @@ func rcrFunc(s *discordgo.Session, m *discordgo.MessageCreate) error {
 	if err != nil {
 		return err
 	}
+	var w sync.WaitGroup
 	for _, mbr := range members {
-		if err = voidRole(s, m.GuildID, blueRole.id, mbr.User.ID); err != nil {
-			return err
-		}
-		err = voidRole(s, m.GuildID, redRole.id, mbr.User.ID)
-		if err != nil {
-			return err
-		}
+		w.Add(1)
+		go func(mem *discordgo.Member) {
+			defer w.Done()
+			log.Printf("clearing blue role from %v\n", mem.User.Username)
+			if err = voidRole(s, m.GuildID, blueRole.id, mem.User.ID); err != nil {
+				log.Println(err)
+				return
+			}
+			log.Printf("clearing red role from %v\n", mem.User.Username)
+			if err = voidRole(s, m.GuildID, redRole.id, mem.User.ID); err != nil {
+				log.Println(err)
+				return
+			}
+		}(mbr)
 	}
+	w.Wait()
 	log.Println(rcrResponse)
 	// TODO : When the server grows greater that 1000 members. There will have to be an if members > 1000 then get more members
 	return nil
