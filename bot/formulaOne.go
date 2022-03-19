@@ -35,19 +35,12 @@ func runFormulaOne(s *discordgo.Session) {
 			log.Printf("waiting until %v event at %v\n", *race.RaceName, race.GetFridayDate())
 			time.Sleep(diff)
 			log.Println("released from wait")
-		} else {
-			go runWeekend(s, race)
-		}
-		if diff < 0 {
+		} else if diff < 0 {
 			log.Println("waiting until the next event to come up")
-			d, err := time.Parse(layout, race.GetDateTime())
-			if err != nil {
-				log.Println(err)
-				continue
-			}
-			x := d.Add(time.Hour * 24)
-			time.Sleep(helper.CalculateTimeDifference(x, d))
+			time.Sleep(time.Hour * 6)
 			log.Println("released from waiting for next event")
+		} else {
+			runWeekend(s, race)
 		}
 	}
 }
@@ -66,16 +59,10 @@ func runWeekend(s *discordgo.Session, r api.Race) {
 		t = t.Add(time.Hour * 9)
 		diff := t.Sub(time.Now())
 		if diff > 0 {
-			log.Printf("waiting for practice at %v\n", t)
+			log.Println("waiting for practice")
 			time.Sleep(diff)
-			m, err := sendMessage(s, guildSportsChannel, fmt.Sprintf(genericF1Response, practice, *r.Circuit.CircuitName))
-			if err != nil {
+			if _, err := sendMessage(s, guildSportsChannel, fmt.Sprintf(genericF1Response, practice, *r.Circuit.CircuitName)); err != nil {
 				log.Println(err)
-				return
-			}
-			if err := addReaction(s, m.ChannelID, m.ID, racingCarEmoji); err != nil {
-				log.Println(err)
-				return
 			}
 			log.Println("practice complete")
 		}
@@ -90,17 +77,10 @@ func runWeekend(s *discordgo.Session, r api.Race) {
 		t = t.Add(time.Hour * 9)
 		diff := t.Sub(time.Now())
 		if diff > 0 {
-			log.Printf("waiting for qualifying at %v\n", t)
+			log.Println("waiting for qualifying")
 			time.Sleep(diff)
-			m, err := sendMessage(s, guildSportsChannel, fmt.Sprintf(genericF1Response, qualifying, *r.Circuit.CircuitName))
-			if err != nil {
+			if _, err := sendMessage(s, guildSportsChannel, fmt.Sprintf(genericF1Response, qualifying, *r.Circuit.CircuitName)); err != nil {
 				log.Println(err)
-				return
-			}
-
-			if err := addReaction(s, m.ChannelID, m.ID, racingCarEmoji); err != nil {
-				log.Println(err)
-				return
 			}
 			log.Println("qualifying complete")
 		}
@@ -113,17 +93,12 @@ func runWeekend(s *discordgo.Session, r api.Race) {
 			log.Println(err)
 			return
 		}
-		diff := t.Sub(time.Now().UTC())
+		t = t.Add(time.Hour * 9)
+		diff := t.Sub(time.Now())
 		if diff > 0 {
-			log.Printf("waiting for race day at %v\n", t)
+			log.Println("waiting for Race day")
 			time.Sleep(diff)
-			m, err := sendMessage(s, guildSportsChannel, fmt.Sprintf(raceDayResponse, *r.RaceName))
-			if err != nil {
-				log.Println(err)
-				return
-			}
-
-			if err := addReaction(s, m.ChannelID, m.ID, racingCarEmoji); err != nil {
+			if _, err := sendMessage(s, guildSportsChannel, fmt.Sprintf(raceDayResponse, *r.RaceName)); err != nil {
 				log.Println(err)
 			}
 			log.Println("Race day complete")
