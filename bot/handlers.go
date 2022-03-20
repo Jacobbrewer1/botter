@@ -32,7 +32,7 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 	if m.Content[0:1] == *config.JsonConfig.BotPrefix {
 		log.Printf("command received: %v", m.Content)
-		botterProcess(s, m)
+		go botterProcess(s, m)
 	}
 	return
 }

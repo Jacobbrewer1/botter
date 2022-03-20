@@ -10,8 +10,9 @@ type command struct {
 }
 
 var (
-	commands = []command{help, actions, verification, ping, invite, serverAdTemplateCommand, hello, hi, hey, laugh, bossCommand, mrsBossCommand, minecraftHomeCoordinates,
-		minecraftBrewing, mcPigRide, roleReactCustom, poll, gifCommand, stickerCommand, resetCustomRoles, grant, void, issue, listIssues}
+	commands = []command{help, actions, verification, ping, invite, serverAdTemplateCommand, hello, hi, hey, laugh, bossCommand,
+		mrsBossCommand, minecraftHomeCoordinates, minecraftBrewing, mcPigRide, roleReactCustom, poll, gifCommand, stickerCommand,
+		resetCustomRoles, grant, void, issue, listIssues, driverStandingsCommand, nextRace}
 
 	verification = command{
 		name:           "Verification",
@@ -210,6 +211,13 @@ var (
 		name:           "Get F1 Driver Standings",
 		trigger:        "driverstandings",
 		response:       "",
+		secondResponse: "",
+	}
+
+	nextRace = command{
+		name:           "Next Formula 1 Race",
+		trigger:        "f1next",
+		response:       "The next race is the %v\nThis is at %v",
 		secondResponse: "",
 	}
 )

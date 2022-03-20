@@ -289,6 +289,9 @@ func botterProcess(s *discordgo.Session, m *discordgo.MessageCreate) {
 	case driverStandingsCommand.trigger:
 		go driverStandings(s, m.ChannelID)
 		break
+	case nextRace.trigger:
+		go nextF1Race(s, m.ChannelID)
+		break
 	default:
 		log.Println(unknownResponse)
 		if _, err := sendMessage(s, m.ChannelID, unknownResponse); err != nil {
