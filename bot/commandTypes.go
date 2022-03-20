@@ -10,8 +10,9 @@ type command struct {
 }
 
 var (
-	commands = []command{help, actions, verification, ping, invite, serverAdTemplateCommand, hello, hi, hey, laugh, bossCommand, mrsBossCommand, minecraftHomeCoordinates,
-		minecraftBrewing, mcPigRide, roleReactCustom, poll, gifCommand, stickerCommand, resetCustomRoles, grant, void, issue, listIssues}
+	commands = []command{help, actions, verification, ping, invite, serverAdTemplateCommand, hello, hi, hey, laugh, bossCommand,
+		mrsBossCommand, minecraftHomeCoordinates, minecraftBrewing, mcPigRide, roleReactCustom, poll, gifCommand, stickerCommand,
+		resetCustomRoles, grant, void, issue, listIssues, driverStandingsCommand}
 
 	verification = command{
 		name:           "Verification",
