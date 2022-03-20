@@ -52,7 +52,7 @@ func sendVerifyMessage(s *discordgo.Session, m *discordgo.MessageCreate, waiter 
 	}
 	log.Println("Embed message sent")
 
-	if err := deleteMessage(s, m); err != nil {
+	if err := deleteMessage(s, m.ChannelID, m.ID); err != nil {
 		return nil, err
 	}
 	log.Println("Command message deleted")

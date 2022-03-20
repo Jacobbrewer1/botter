@@ -60,7 +60,7 @@ func stickerMessage(s *discordgo.Session, m *discordgo.MessageCreate) error {
 			return nil
 		}
 	}
-	if err := deleteMessage(s, m); err != nil {
+	if err := deleteMessage(s, m.ChannelID, m.ID); err != nil {
 		return err
 	}
 	return nil
@@ -118,7 +118,7 @@ func gifMessage(s *discordgo.Session, m *discordgo.MessageCreate) error {
 			return nil
 		}
 	}
-	if err := deleteMessage(s, m); err != nil {
+	if err := deleteMessage(s, m.ChannelID, m.ID); err != nil {
 		return err
 	}
 	return nil

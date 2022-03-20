@@ -28,6 +28,7 @@ func Start() {
 	bot.AddHandler(reactionAddHandler)
 	bot.AddHandler(reactionRemoveHandler)
 	bot.AddHandler(memberJoinHandler)
+	bot.AddHandler(messageEditHandler)
 
 	bot.Identify.Intents = discordgo.MakeIntent(discordgo.IntentsAll)
 
