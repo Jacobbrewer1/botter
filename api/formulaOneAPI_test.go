@@ -28,11 +28,10 @@ func TestGetNextRace(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			rawJson, err := GetNextRace()
+			_, err := GetNextRace()
 			if err != nil {
-				t.Errorf(err.Error())
+				t.Errorf("GetNextRace() error = %v", err)
 			}
-			log.Println(rawJson)
 		})
 	}
 }
@@ -88,11 +87,10 @@ func TestGetDriverStandings(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			x, err := GetDriverStandings()
+			_, err := GetDriverStandings()
 			if err != nil {
 				t.Errorf("GetDriverStandings() error = %v", err)
 			}
-			log.Println(x)
 		})
 	}
 }
