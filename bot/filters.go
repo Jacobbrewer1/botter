@@ -10,8 +10,8 @@ import (
 	"time"
 )
 
-func messageFilter(s *discordgo.Session, m *discordgo.MessageCreate) bool {
-	messageUser := func(s *discordgo.Session, m *discordgo.MessageCreate, response string, timeout ...bool) error {
+func messageFilter(s *discordgo.Session, m *discordgo.Message) bool {
+	messageUser := func(s *discordgo.Session, m *discordgo.Message, response string, timeout ...bool) error {
 		guild, err := s.Guild(m.GuildID)
 		if err != nil {
 			return err
@@ -49,7 +49,7 @@ func messageFilter(s *discordgo.Session, m *discordgo.MessageCreate) bool {
 				return
 			}
 			log.Println("Server invite detected")
-			if err := deleteMessage(s, m); err != nil {
+			if err := deleteMessage(s, m.ChannelID, m.ID); err != nil {
 				log.Println(err)
 				result <- false
 				return
@@ -80,7 +80,7 @@ func messageFilter(s *discordgo.Session, m *discordgo.MessageCreate) bool {
 				return
 			}
 			log.Println("banned word detected")
-			if err := deleteMessage(s, m); err != nil {
+			if err := deleteMessage(s, m.ChannelID, m.ID); err != nil {
 				log.Println(err)
 				result <- false
 				return

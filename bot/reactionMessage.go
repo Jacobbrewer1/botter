@@ -18,7 +18,7 @@ func reactionMessage(s *discordgo.Session, m *discordgo.MessageCreate, cmd comma
 		return err
 	}
 
-	if err := deleteMessage(s, m); err != nil {
+	if err := deleteMessage(s, m.ChannelID, m.ID); err != nil {
 		return err
 	}
 

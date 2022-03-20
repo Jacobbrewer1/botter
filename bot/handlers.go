@@ -22,7 +22,7 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 		return
 	}
 
-	if messageFilter(s, m) {
+	if messageFilter(s, m.Message) {
 		return
 	}
 
@@ -35,6 +35,18 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 		go botterProcess(s, m)
 	}
 	return
+}
+
+func messageEditHandler(s *discordgo.Session, e *discordgo.MessageUpdate) {
+	log.Println("message edit received")
+	if e.Author.ID == botId {
+		log.Println("message edit is from botter")
+		return
+	}
+
+	if messageFilter(s, e.Message) {
+		return
+	}
 }
 
 func reactionAddHandler(s *discordgo.Session, i *discordgo.MessageReactionAdd) {

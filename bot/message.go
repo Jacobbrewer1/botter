@@ -68,7 +68,7 @@ func botterProcess(s *discordgo.Session, m *discordgo.MessageCreate) {
 		}
 		break
 	case laugh.trigger:
-		if err := deleteMessage(s, m); err != nil {
+		if err := deleteMessage(s, m.ChannelID, m.ID); err != nil {
 			log.Println(err)
 			break
 		}
@@ -354,7 +354,7 @@ func sendReplyMessage(s *discordgo.Session, m *discordgo.MessageCreate, message 
 }
 
 func sendTextJoke(s *discordgo.Session, m *discordgo.MessageCreate, text string) (*discordgo.Message, error) {
-	if err := deleteMessage(s, m); err != nil {
+	if err := deleteMessage(s, m.ChannelID, m.ID); err != nil {
 		return nil, err
 	}
 	message, err := s.ChannelMessageSend(m.ChannelID, text)
@@ -390,8 +390,8 @@ func sendActions(s *discordgo.Session, m *discordgo.MessageCreate) error {
 	return err
 }
 
-func deleteMessage(s *discordgo.Session, m *discordgo.MessageCreate) error {
-	err := s.ChannelMessageDelete(m.ChannelID, m.ID)
+func deleteMessage(s *discordgo.Session, channelId, messageId string) error {
+	err := s.ChannelMessageDelete(channelId, messageId)
 	if err != nil {
 		return err
 	}
