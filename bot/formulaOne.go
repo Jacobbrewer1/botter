@@ -26,7 +26,7 @@ func driverStandings(s *discordgo.Session, channelId string) {
 	text := fmt.Sprintf("Season - %v", *standings.StandingsTable.Season)
 	for _, d := range standings.StandingsTable.StandingsLists[0].DriverStandings {
 		text = text + "\n"
-		tmp := fmt.Sprintf("%v - %v", *d.Position, *d.Driver.FamilyName)
+		tmp := fmt.Sprintf("%v - %v - Points: %v", *d.Position, *d.Driver.FamilyName, *d.Points)
 		text = text + tmp
 	}
 	log.Println("message created")
