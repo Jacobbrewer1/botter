@@ -66,6 +66,7 @@ func removeRoleCustom(s *discordgo.Session, i *discordgo.MessageReactionRemove) 
 
 // Function to reset custom roles
 func rcrFunc(s *discordgo.Session, m *discordgo.MessageCreate) error {
+	log.Println("reset custom roles process started")
 	roleReactionIdCustom = ""
 	members, err := s.GuildMembers(m.GuildID, "", 1000)
 	if err != nil {
@@ -73,7 +74,7 @@ func rcrFunc(s *discordgo.Session, m *discordgo.MessageCreate) error {
 	}
 	var w sync.WaitGroup
 	for _, mbr := range members {
-		w.Add(1)
+		w.Add(2)
 		go func(mem *discordgo.Member) {
 			defer w.Done()
 			log.Printf("clearing blue role from %v\n", mem.User.Username)
@@ -81,15 +82,20 @@ func rcrFunc(s *discordgo.Session, m *discordgo.MessageCreate) error {
 				log.Println(err)
 				return
 			}
+			log.Printf("blue role cleared from %v\n", mem.User.Username)
+		}(mbr)
+		go func(mem *discordgo.Member) {
+			defer w.Done()
 			log.Printf("clearing red role from %v\n", mem.User.Username)
 			if err = voidRole(s, m.GuildID, redRole.id, mem.User.ID); err != nil {
 				log.Println(err)
 				return
 			}
+			log.Printf("blue role cleared from %v\n", mem.User.Username)
 		}(mbr)
 	}
 	w.Wait()
-	log.Println(rcrResponse)
+	log.Println("reset custom roles precess completed")
 	// TODO : When the server grows greater that 1000 members. There will have to be an if members > 1000 then get more members
 	return nil
 }

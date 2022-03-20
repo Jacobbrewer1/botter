@@ -18,6 +18,7 @@ func messageHandler(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 
 	if m.Author.ID == botId {
+		log.Println("message is from botter")
 		return
 	}
 
