@@ -76,13 +76,13 @@ func runFormulaOne(s *discordgo.Session) {
 			go runWeekend(s, race)
 		}
 		if diff < 0 {
-			log.Println("waiting until the next event to come up")
 			d, err := time.Parse(layout, race.GetDateTime())
 			if err != nil {
 				log.Println(err)
 				continue
 			}
 			x := d.Add(time.Hour * 24)
+			log.Printf("waiting until %v to get the next event\n", x)
 			time.Sleep(helper.CalculateTimeDifference(x, d))
 			log.Println("released from waiting for next event")
 			go driverStandings(s, guildSportsChannel)
