@@ -14,6 +14,24 @@ var (
 	layout = "2006-01-02T15:04:05Z"
 )
 
+func nextF1Race(s *discordgo.Session, channelId string) {
+	race, err := api.GetNextRace()
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	t, err := time.Parse(layout, race.GetDateTime())
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	if _, err := sendMessage(s, channelId, fmt.Sprintf(nextRace.response, *race.RaceName, t)); err != nil {
+		log.Println(err)
+		return
+	}
+	return
+}
+
 func driverStandings(s *discordgo.Session, channelId string) {
 	log.Println("driver standings requested")
 	standings, err := api.GetDriverStandings()
