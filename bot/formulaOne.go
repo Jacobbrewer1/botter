@@ -14,6 +14,43 @@ var (
 	layout = "2006-01-02T15:04:05Z"
 )
 
+func driverStandings(s *discordgo.Session, channelId string) {
+	log.Println("driver standings requested")
+	standings, err := api.GetDriverStandings()
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	log.Println("got driver standings")
+	log.Println("creating message for embed")
+	text := fmt.Sprintf("Season - %v", *standings.StandingsTable.Season)
+	for _, d := range standings.StandingsTable.StandingsLists[0].DriverStandings {
+		text = text + "\n"
+		tmp := fmt.Sprintf("%v - %v - Points: %v", *d.Position, *d.Driver.FamilyName, *d.Points)
+		text = text + tmp
+	}
+	log.Println("message created")
+	log.Println("creating embed")
+	var e = discordgo.MessageEmbed{
+		Title:       "Formula 1 Driver Standings",
+		Description: text,
+		Color:       redEmbed,
+	}
+	log.Println("embed created")
+	log.Println("sending message")
+	msg, err := s.ChannelMessageSendEmbed(channelId, &e)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	log.Println("message sent")
+	if err := addReaction(s, msg.ChannelID, msg.ID, racingCarEmoji); err != nil {
+		log.Println(err)
+		return
+	}
+	log.Println("reaction added")
+}
+
 // Should be run as a go routine to allow it to run independently to the rest of the bot
 // i.e. go runFormulaOne
 func runFormulaOne(s *discordgo.Session) {
@@ -39,15 +76,16 @@ func runFormulaOne(s *discordgo.Session) {
 			go runWeekend(s, race)
 		}
 		if diff < 0 {
-			log.Println("waiting until the next event to come up")
 			d, err := time.Parse(layout, race.GetDateTime())
 			if err != nil {
 				log.Println(err)
 				continue
 			}
 			x := d.Add(time.Hour * 24)
+			log.Printf("waiting until %v to get the next event\n", x)
 			time.Sleep(helper.CalculateTimeDifference(x, d))
 			log.Println("released from waiting for next event")
+			go driverStandings(s, guildSportsChannel)
 		}
 	}
 }
