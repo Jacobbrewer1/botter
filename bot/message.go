@@ -287,7 +287,7 @@ func botterProcess(s *discordgo.Session, m *discordgo.MessageCreate) {
 		}
 		break
 	case driverStandingsCommand.trigger:
-		go driverStandings(s, m)
+		go driverStandings(s, m.ChannelID)
 		break
 	default:
 		log.Println(unknownResponse)
