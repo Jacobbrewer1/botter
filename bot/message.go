@@ -289,6 +289,11 @@ func botterProcess(s *discordgo.Session, m *discordgo.MessageCreate) {
 	case driverStandingsCommand.trigger:
 		go driverStandings(s, m.ChannelID)
 		break
+	case constructorStandingsCommand.trigger:
+		go constructorStandings(s, m.ChannelID)
+		break
+	case standings.trigger:
+		go getBothStandings(s, m.ChannelID)
 	case nextRace.trigger:
 		go nextF1Race(s, m.ChannelID)
 		break

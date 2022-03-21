@@ -12,7 +12,7 @@ type command struct {
 var (
 	commands = []command{help, actions, verification, ping, invite, serverAdTemplateCommand, hello, hi, hey, laugh, bossCommand,
 		mrsBossCommand, minecraftHomeCoordinates, minecraftBrewing, mcPigRide, roleReactCustom, poll, gifCommand, stickerCommand,
-		resetCustomRoles, grant, void, issue, listIssues, driverStandingsCommand, nextRace}
+		resetCustomRoles, grant, void, issue, listIssues, standings, driverStandingsCommand, constructorStandingsCommand, nextRace}
 
 	verification = command{
 		name:           "Verification",
@@ -210,6 +210,20 @@ var (
 	driverStandingsCommand = command{
 		name:           "Get F1 Driver Standings",
 		trigger:        "driverstandings",
+		response:       "",
+		secondResponse: "",
+	}
+
+	constructorStandingsCommand = command{
+		name:           "Get F1 Constructor Standings",
+		trigger:        "constructorstandings",
+		response:       "",
+		secondResponse: "",
+	}
+
+	standings = command{
+		name:           "Get all f1 standings",
+		trigger:        "standings",
 		response:       "",
 		secondResponse: "",
 	}

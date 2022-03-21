@@ -32,6 +32,48 @@ func nextF1Race(s *discordgo.Session, channelId string) {
 	return
 }
 
+func getBothStandings(s *discordgo.Session, channelId string) {
+	go driverStandings(s, channelId)
+	go constructorStandings(s, channelId)
+}
+
+func constructorStandings(s *discordgo.Session, channelId string) {
+	log.Println("constructor standings requested")
+	standings, err := api.GetConstructorStandings()
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	log.Println("got constructor standings")
+	log.Println("creating message for embed")
+	text := fmt.Sprintf("Season - %v", *standings.StandingsTable.Season)
+	for _, d := range standings.StandingsTable.StandingsLists[0].ConstructorStandings {
+		text = text + "\n"
+		tmp := fmt.Sprintf("%v - %v - Points: %v", *d.Position, *d.Constructor.Name, *d.Points)
+		text = text + tmp
+	}
+	log.Println("message created")
+	log.Println("creating embed")
+	var e = discordgo.MessageEmbed{
+		Title:       "Formula 1 Constructor Standings",
+		Description: text,
+		Color:       redEmbed,
+	}
+	log.Println("embed created")
+	log.Println("sending message")
+	msg, err := s.ChannelMessageSendEmbed(channelId, &e)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	log.Println("message sent")
+	if err := addReaction(s, msg.ChannelID, msg.ID, racingCarEmoji); err != nil {
+		log.Println(err)
+		return
+	}
+	log.Println("reaction added")
+}
+
 func driverStandings(s *discordgo.Session, channelId string) {
 	log.Println("driver standings requested")
 	standings, err := api.GetDriverStandings()

@@ -63,27 +63,31 @@ type (
 
 	DriverStandingsStruct struct {
 		*BaseStruct
-		StandingsTable *StandingsTableStruct `json:"StandingsTable,omitempty"`
+		StandingsTable *DriverStandingsTableStruct `json:"StandingsTable,omitempty"`
 	}
 
-	StandingsTableStruct struct {
-		Season         *string                 `json:"season,omitempty"`
-		StandingsLists []*StandingsListsStruct `json:"StandingsLists,omitempty"`
+	DriverStandingsTableStruct struct {
+		Season         *string                       `json:"season,omitempty"`
+		StandingsLists []*DriverStandingsListsStruct `json:"StandingsLists,omitempty"`
 	}
 
-	StandingsListsStruct struct {
+	DriverStandingsListsStruct struct {
 		Season          *string                         `json:"season,omitempty"`
 		Round           *string                         `json:"round,omitempty"`
 		DriverStandings []*DriverStandingPositionStruct `json:"DriverStandings,omitempty"`
 	}
 
 	DriverStandingPositionStruct struct {
-		Position     *string               `json:"position,omitempty"`
-		PositionText *string               `json:"positionText,omitempty"`
-		Points       *string               `json:"points,omitempty"`
-		Wins         *string               `json:"wins,omitempty"`
+		*StatsStruct
 		Driver       *DriverStruct         `json:"Driver,omitempty"`
 		Constructors []*ConstructorsStruct `json:"constructors,omitempty"`
+	}
+
+	StatsStruct struct {
+		Position     *string `json:"position,omitempty"`
+		PositionText *string `json:"positionText,omitempty"`
+		Points       *string `json:"points,omitempty"`
+		Wins         *string `json:"wins,omitempty"`
 	}
 
 	DriverStruct struct {
@@ -103,9 +107,37 @@ type (
 		Name          *string `json:"name,omitempty"`
 		Nationality   *string `json:"nationality,omitempty"`
 	}
+
+	ConstructorStandingsMRDataStruct struct {
+		*ConstructorStandingsStruct `json:"MRData,omitempty"`
+	}
+
+	ConstructorStandingsStruct struct {
+		*BaseStruct
+		StandingsTable *ConstructorSeasonTable `json:"StandingsTable,omitempty"`
+	}
+
+	ConstructorSeasonTable struct {
+		Season         *string                        `json:"season,omitempty"`
+		StandingsLists []*ConstructorSeasonListStruct `json:"StandingsLists,omitempty"`
+	}
+
+	ConstructorSeasonListStruct struct {
+		Season               *string                               `json:"season,omitempty"`
+		Round                *string                               `json:"round,omitempty"`
+		ConstructorStandings []*ConstructorStandingsPositionStruct `json:"ConstructorStandings,omitempty"`
+	}
+
+	ConstructorStandingsPositionStruct struct {
+		Position     *string             `json:"position"`
+		PositionText *string             `json:"positionText"`
+		Points       *string             `json:"points"`
+		Wins         *string             `json:"wins"`
+		Constructor  *ConstructorsStruct `json:"Constructor"`
+	}
 )
 
-func (s StandingsListsStruct) GetPosition(p int) *DriverStandingPositionStruct {
+func (s DriverStandingsListsStruct) GetPosition(p int) *DriverStandingPositionStruct {
 	position := strconv.Itoa(p)
 	for _, i := range s.DriverStandings {
 		if *i.Position == position {
@@ -113,6 +145,16 @@ func (s StandingsListsStruct) GetPosition(p int) *DriverStandingPositionStruct {
 		}
 	}
 	return &DriverStandingPositionStruct{}
+}
+
+func (s ConstructorSeasonListStruct) GetPosition(p int) *ConstructorStandingsPositionStruct {
+	position := strconv.Itoa(p)
+	for _, i := range s.ConstructorStandings {
+		if *i.Position == position {
+			return i
+		}
+	}
+	return &ConstructorStandingsPositionStruct{}
 }
 
 func (r Race) GetFridayDate() string {
