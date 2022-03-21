@@ -10,6 +10,7 @@ import (
 const (
 	nextF1RaceEndpoint               = "f1/current/next.json"
 	currentF1DriverStandingsEndpoint = "f1/current/driverStandings.json"
+	currentF1ConstructorStandings    = "f1/current/constructorStandings.json"
 )
 
 func GetNextRace() (Race, error) {
@@ -42,6 +43,20 @@ func decodeDriverStandings(rawJson json.RawMessage) (DriverStandingsStruct, erro
 	var d DriverStandingsMRDataStruct
 	err := json.Unmarshal(rawJson, &d)
 	return *d.DriverStandingsStruct, err
+}
+
+func GetConstructorStandings() (ConstructorStandingsStruct, error) {
+	rawJson, err := fetchFormulaOneApi(currentF1ConstructorStandings)
+	if err != nil {
+		return ConstructorStandingsStruct{}, err
+	}
+	return decodeConstructStandings(rawJson)
+}
+
+func decodeConstructStandings(rawJson json.RawMessage) (ConstructorStandingsStruct, error) {
+	var c ConstructorStandingsMRDataStruct
+	err := json.Unmarshal(rawJson, &c)
+	return *c.ConstructorStandingsStruct, err
 }
 
 func fetchFormulaOneApi(endpoint string) (json.RawMessage, error) {

@@ -94,3 +94,33 @@ func TestGetDriverStandings(t *testing.T) {
 		})
 	}
 }
+
+func TestGetConstructorStandings(t *testing.T) {
+	file, err := ioutil.ReadFile("../config/config.json")
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	err = json.Unmarshal(file, &config.JsonConfig)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	tests := []struct {
+		name     string
+	}{
+		{"test one"},
+		{"test two"},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			_, err := GetConstructorStandings()
+			if err != nil {
+				t.Errorf("GetConstructorStandings() error = %v", err)
+			}
+		})
+	}
+}
+
