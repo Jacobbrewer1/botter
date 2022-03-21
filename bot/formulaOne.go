@@ -25,7 +25,7 @@ func nextF1Race(s *discordgo.Session, channelId string) {
 		log.Println(err)
 		return
 	}
-	if _, err := sendMessage(s, channelId, fmt.Sprintf(nextRace.response, *race.RaceName, t)); err != nil {
+	if _, err := sendMessage(s, channelId, fmt.Sprintf(nextRace.response, *race.RaceName, t.Format(time.RFC1123))); err != nil {
 		log.Println(err)
 		return
 	}
