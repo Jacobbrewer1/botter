@@ -6,5 +6,5 @@ https://discordapp.com/oauth2/authorize?client_id=[CLIENTID]&scope=bot and repla
 
 Run command: 
 <code>
-docker run -d --name botter --restart always jacobbrewer1/botter:latest
+docker run -d --name botter --network="host" --restart always jacobbrewer1/botter:latest
 </code>
