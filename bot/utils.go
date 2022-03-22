@@ -59,6 +59,12 @@ const (
 	// Github values
 	jacobGithubLogon     = "Jacobbrewer1"
 	issueNotAssignedText = "Issue not assigned"
+	autoIssueTitle = "Botter Auto Error"
+	autoIssueBody = "Botter errored at %v. Error logs provided:\n%v"
+
+	// Github label values
+	autoCreatedLabel = ":robot: Auto Created :robot:"
+	bugLabel         = ":rotating_light: bug :rotating_light:"
 
 	// Formula 1 responses
 	genericF1Response  = "It's %v at the %v today"

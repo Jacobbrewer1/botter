@@ -11,7 +11,7 @@ import (
 	"net/http"
 )
 
-func CreateIssue(title, body string) (Issue, User, error) {
+func CreateIssue(title, body string, labels ...string) (Issue, User, error) {
 	randomUser, err := getRandomRepoCollaborator("Jacobbrewer1/botter")
 	if err != nil {
 		return Issue{ID: nil}, User{ID: nil}, err
@@ -20,7 +20,7 @@ func CreateIssue(title, body string) (Issue, User, error) {
 	if err != nil {
 		return Issue{}, User{}, err
 	}
-	rawJson, err := postBotterIssue(title, body, *u.Login)
+	rawJson, err := postBotterIssue(title, body, *u.Login, labels...)
 	if err != nil {
 		return Issue{ID: nil}, User{ID: nil}, err
 	}
@@ -161,18 +161,23 @@ func decodeRepos(jsonRaw json.RawMessage) ([]Repository, error) {
 	return repositories, err
 }
 
-func postBotterIssue(title, bodyString, assignee string) (json.RawMessage, error) {
+func postBotterIssue(title, bodyString, assignee string, labels ...string) (json.RawMessage, error) {
 	issueData := NewIssue{
 		Title:    title,
 		Body:     bodyString,
 		Assignee: assignee,
 	}
+
+	if labels != nil {
+		issueData.Labels = labels
+	}
+
 	body, err := json.Marshal(issueData)
 	if err != nil {
 		return nil, err
 	}
 
-	req, err := http.NewRequest("POST", *config.JsonConfig.Endpoints.GithubApiEndpoint+"repos/Jacobbrewer1/botter/issues", bytes.NewReader(body))
+	req, err := http.NewRequest(http.MethodPost, *config.JsonConfig.Endpoints.GithubApiEndpoint+"repos/Jacobbrewer1/botter/issues", bytes.NewReader(body))
 	if err != nil {
 		return nil, err
 	}

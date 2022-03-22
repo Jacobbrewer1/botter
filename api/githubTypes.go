@@ -9,9 +9,10 @@ type Timestamp struct {
 }
 
 type NewIssue struct {
-	Title    string `json:"title"`
-	Body     string `json:"body"`
-	Assignee string `json:"assignee"`
+	Title    string   `json:"title"`
+	Body     string   `json:"body"`
+	Assignee string   `json:"assignee"`
+	Labels   []string `json:"labels"`
 }
 
 // User represents a GitHub user.

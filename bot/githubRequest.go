@@ -6,7 +6,9 @@ import (
 	"github.com/Jacobbrewer1/botter/api"
 	"github.com/Jacobbrewer1/botter/helper"
 	"github.com/bwmarrin/discordgo"
+	"log"
 	"strings"
+	"time"
 )
 
 func createGithubIssue(s *discordgo.Session, m *discordgo.MessageCreate) error {
@@ -30,7 +32,9 @@ func createGithubIssue(s *discordgo.Session, m *discordgo.MessageCreate) error {
 		return err
 	}
 
-	if _, err := sendMessage(s, m.ChannelID, fmt.Sprintf(issue.response, *i.Number, *i.Title, helper.RemoveBoldness(strings.Replace(*i.Body, "\n", "", 1)), *u.Name, *i.HTMLURL)); err != nil {
+	if _, err := sendMessage(s, m.ChannelID, fmt.Sprintf(issue.response, *i.Number, *i.Title,
+		helper.RemoveBoldness(strings.Replace(*i.Body, "\n", "", 1)),
+		*u.Name, *i.HTMLURL)); err != nil {
 		return err
 	}
 	return nil
@@ -82,4 +86,22 @@ func getGithubIssues(s *discordgo.Session, m *discordgo.MessageCreate) error {
 		return err
 	}
 	return nil
+}
+
+func autoIssue(s *discordgo.Session, channelId string, e error) {
+	log.Println("creating auto issue for botter error")
+	i, u, err := api.CreateIssue(autoIssueTitle,
+		fmt.Sprintf(autoIssueBody, time.Now().Format(time.RFC1123), e),
+		autoCreatedLabel)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	if _, err := sendMessage(s, channelId, fmt.Sprintf(issue.response, *i.Number, *i.Title,
+		helper.RemoveBoldness(strings.Replace(*i.Body, "\n", "", 1)),
+		*u.Name, *i.HTMLURL)); err != nil {
+		log.Println(err)
+		return
+	}
 }
