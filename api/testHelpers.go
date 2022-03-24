@@ -8,6 +8,17 @@ import (
 	"strings"
 )
 
+func testerPointString(text string) *string {
+	return &text
+}
+
+func testerIsOrganisationsRepo(containOrgRepos bool) Repository {
+	if containOrgRepos {
+		return Repository{Owner: &User{Type: testerPointString("Organization")}}
+	}
+	return Repository{Owner: &User{Type: testerPointString("User")}}
+}
+
 func testerSetupIssue(isPullRequest, assigned, assignedMulti bool) Issue {
 	var i Issue
 	if isPullRequest {

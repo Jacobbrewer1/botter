@@ -45,3 +45,27 @@ func TestIssue_IsAssigned(t *testing.T) {
 		})
 	}
 }
+
+func TestRepository_IsOrganisationsRepo(t *testing.T) {
+	tests := []struct {
+		name     string
+		input    Repository
+		expected bool
+	}{
+		{"false", testerIsOrganisationsRepo(false), false},
+		{"true", testerIsOrganisationsRepo(true), true},
+		{"true", testerIsOrganisationsRepo(true), true},
+		{"true", testerIsOrganisationsRepo(true), true},
+		{"false", testerIsOrganisationsRepo(false), false},
+		{"true", testerIsOrganisationsRepo(true), true},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			gotBool := tt.input.IsOrganisationsRepo()
+			if gotBool != tt.expected {
+				t.Errorf("IsOrganisationsRepo() = %v, expected %v", gotBool, tt.expected)
+			}
+		})
+	}
+}

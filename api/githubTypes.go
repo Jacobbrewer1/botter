@@ -12,7 +12,7 @@ type NewIssue struct {
 	Title    string   `json:"title"`
 	Body     string   `json:"body"`
 	Assignee string   `json:"assignee"`
-	Labels   []string `json:"labels"`
+	Labels   []string `json:"labels,omitempty"`
 }
 
 // User represents a GitHub user.
@@ -322,6 +322,10 @@ type Repository struct {
 	// overrides the field parameter when both are used.
 	// Can be one of public, private or internal.
 	Visibility *string `json:"visibility,omitempty"`
+}
+
+func (r Repository) IsOrganisationsRepo() bool {
+	return *r.Owner.Type == "Organization"
 }
 
 // CodeOfConduct represents a code of conduct.
