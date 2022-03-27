@@ -231,7 +231,7 @@ var (
 	nextRace = command{
 		name:           "Next Formula 1 Race",
 		trigger:        "f1next",
-		response:       "The next race is the %v\nAt %v",
+		response:       "The next race is the %v\nat %v",
 		secondResponse: "",
 	}
 )

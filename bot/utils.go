@@ -61,9 +61,11 @@ const (
 	issueNotAssignedText = "Issue not assigned"
 
 	// Formula 1 responses
-	genericF1Response  = "It's %v at the %v today"
-	raceDayResponse    = "It's race day at the %v in 1 hours time!"
-	practice           = "Practice"
-	qualifying         = "Qualifying"
-	guildSportsChannel = "811662158303068221"
+	genericF1ResponseOneHourTime = "It's %v at the %v in 1 hour"
+	genericF1ResponseNow         = "It's %v at the %v starting now"
+	raceDayResponse              = "It's race day at the %v in 1 hours time!"
+	raceDayResponseNow           = "It's race day at the %v right now!"
+	practice                     = "Practice"
+	qualifying                   = "Qualifying"
+	guildSportsChannel           = "811662158303068221"
 )
