@@ -145,6 +145,10 @@ type (
 	}
 )
 
+func (s Session) GetSessionDateTime() string {
+	return fmt.Sprintf("%vT%v", *s.Date, *s.Time)
+}
+
 func (s DriverStandingsListsStruct) GetPosition(p int) *DriverStandingPositionStruct {
 	position := strconv.Itoa(p)
 	for _, i := range s.DriverStandings {

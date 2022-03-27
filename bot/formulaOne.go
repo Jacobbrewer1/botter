@@ -121,12 +121,12 @@ func runFormulaOne(s *discordgo.Session) {
 			log.Println(err)
 			continue
 		}
-		t, err := time.Parse(layout, race.GetFridayDate())
+		t, err := time.Parse(layout, race.FirstPractice.GetSessionDateTime())
 		if err != nil {
 			log.Println(err)
 			continue
 		}
-		log.Printf("race weekend start date %v\n", t)
+		log.Printf("first practice start %v\n", t)
 		diff := helper.CalculateTimeDifference(t, time.Now().UTC())
 		if diff > 0 {
 			log.Printf("waiting until %v event at %v\n", *race.RaceName, race.GetFridayDate())
@@ -153,65 +153,177 @@ func runFormulaOne(s *discordgo.Session) {
 func runWeekend(s *discordgo.Session, r api.Race) {
 	log.Println("running race weekend process")
 	var waiter sync.WaitGroup
-	waiter.Add(3)
+	waiter.Add(5)
+
+	// First practice
 	go func() {
 		defer waiter.Done()
-		t, err := time.Parse(layout, r.GetFridayDate())
+		t, err := time.Parse(layout, r.FirstPractice.GetSessionDateTime())
 		if err != nil {
 			log.Println(err)
 			return
 		}
-		t = t.Add(time.Hour * 9)
+		t = t.Add(-time.Hour)
 		diff := t.Sub(time.Now())
 		if diff > 0 {
-			log.Printf("waiting for practice at %v\n", t)
+			log.Printf("waiting for first practice at %v\n", t)
 			time.Sleep(diff)
-			m, err := sendMessage(s, guildSportsChannel, fmt.Sprintf(genericF1Response, practice, *r.Circuit.CircuitName))
+			m, err := sendMessage(s, guildSportsChannel, fmt.Sprintf(genericF1ResponseOneHourTime, practice, *r.Circuit.CircuitName))
 			if err != nil {
 				log.Println(err)
 				return
 			}
 			if err := addReaction(s, m.ChannelID, m.ID, racingCarEmoji); err != nil {
-				log.Println(err)
-				return
-			}
-			log.Println("practice complete")
-		}
-	}()
-	go func() {
-		defer waiter.Done()
-		t, err := time.Parse(layout, r.GetSaturdayDate())
-		if err != nil {
-			log.Println(err)
-			return
-		}
-		t = t.Add(time.Hour * 9)
-		diff := t.Sub(time.Now())
-		if diff > 0 {
-			log.Printf("waiting for qualifying at %v\n", t)
-			time.Sleep(diff)
-			m, err := sendMessage(s, guildSportsChannel, fmt.Sprintf(genericF1Response, qualifying, *r.Circuit.CircuitName))
-			if err != nil {
 				log.Println(err)
 				return
 			}
 
+			t = t.Add(time.Hour)
+			diff = t.Sub(time.Now())
+			time.Sleep(diff)
+			msg, err := sendMessage(s, guildSportsChannel, fmt.Sprintf(genericF1ResponseNow, practice, *r.Circuit.CircuitName))
+			if err != nil {
+				log.Println(err)
+				return
+			}
+			if err := addReaction(s, msg.ChannelID, msg.ID, racingCarEmoji); err != nil {
+				log.Println(err)
+				return
+			}
+
+			log.Println("practice complete")
+		}
+	}()
+
+	// Second practice
+	go func() {
+		defer waiter.Done()
+		t, err := time.Parse(layout, r.SecondPractice.GetSessionDateTime())
+		if err != nil {
+			log.Println(err)
+			return
+		}
+		t = t.Add(-time.Hour)
+		diff := t.Sub(time.Now())
+		if diff > 0 {
+			log.Printf("waiting for second practice at %v\n", t)
+			time.Sleep(diff)
+			m, err := sendMessage(s, guildSportsChannel, fmt.Sprintf(genericF1ResponseOneHourTime, practice, *r.Circuit.CircuitName))
+			if err != nil {
+				log.Println(err)
+				return
+			}
 			if err := addReaction(s, m.ChannelID, m.ID, racingCarEmoji); err != nil {
+				log.Println(err)
+				return
+			}
+
+			t = t.Add(time.Hour)
+			diff = t.Sub(time.Now())
+			time.Sleep(diff)
+			msg, err := sendMessage(s, guildSportsChannel, fmt.Sprintf(genericF1ResponseNow, practice, *r.Circuit.CircuitName))
+			if err != nil {
+				log.Println(err)
+				return
+			}
+			if err := addReaction(s, msg.ChannelID, msg.ID, racingCarEmoji); err != nil {
+				log.Println(err)
+				return
+			}
+
+			log.Println("practice complete")
+		}
+	}()
+
+	// Third practice method
+	go func() {
+		defer waiter.Done()
+		t, err := time.Parse(layout, r.ThirdPractice.GetSessionDateTime())
+		if err != nil {
+			log.Println(err)
+			return
+		}
+		t = t.Add(-time.Hour)
+		diff := t.Sub(time.Now())
+		if diff > 0 {
+			log.Printf("waiting for third practice at %v\n", t)
+			time.Sleep(diff)
+			m, err := sendMessage(s, guildSportsChannel, fmt.Sprintf(genericF1ResponseOneHourTime, practice, *r.Circuit.CircuitName))
+			if err != nil {
+				log.Println(err)
+				return
+			}
+			if err := addReaction(s, m.ChannelID, m.ID, racingCarEmoji); err != nil {
+				log.Println(err)
+				return
+			}
+
+			t = t.Add(time.Hour)
+			diff = t.Sub(time.Now())
+			time.Sleep(diff)
+			msg, err := sendMessage(s, guildSportsChannel, fmt.Sprintf(genericF1ResponseNow, practice, *r.Circuit.CircuitName))
+			if err != nil {
+				log.Println(err)
+				return
+			}
+			if err := addReaction(s, msg.ChannelID, msg.ID, racingCarEmoji); err != nil {
+				log.Println(err)
+				return
+			}
+
+			log.Println("practice complete")
+		}
+	}()
+
+	// Qualifying method
+	go func() {
+		defer waiter.Done()
+		t, err := time.Parse(layout, r.Qualifying.GetSessionDateTime())
+		if err != nil {
+			log.Println(err)
+			return
+		}
+		t = t.Add(-time.Hour)
+		diff := t.Sub(time.Now())
+		if diff > 0 {
+			log.Printf("waiting for qualifying at %v\n", t)
+			time.Sleep(diff)
+			m, err := sendMessage(s, guildSportsChannel, fmt.Sprintf(genericF1ResponseOneHourTime, qualifying, *r.Circuit.CircuitName))
+			if err != nil {
+				log.Println(err)
+				return
+			}
+			if err := addReaction(s, m.ChannelID, m.ID, racingCarEmoji); err != nil {
+				log.Println(err)
+				return
+			}
+
+			t = t.Add(time.Hour)
+			diff = t.Sub(time.Now())
+
+			msg, err := sendMessage(s, guildSportsChannel, fmt.Sprintf(genericF1ResponseOneHourTime, qualifying, *r.Circuit.CircuitName))
+			if err != nil {
+				log.Println(err)
+				return
+			}
+			if err := addReaction(s, msg.ChannelID, msg.ID, racingCarEmoji); err != nil {
 				log.Println(err)
 				return
 			}
 			log.Println("qualifying complete")
 		}
 	}()
+
+	// Racing method
 	go func() {
 		defer waiter.Done()
-		t, err := time.Parse(layout, r.GetDateTime())
+		t, err := time.Parse(layout, r.Session.GetSessionDateTime())
 		t = t.Add(-time.Hour)
 		if err != nil {
 			log.Println(err)
 			return
 		}
-		diff := t.Sub(time.Now().UTC())
+		diff := t.Sub(time.Now())
 		if diff > 0 {
 			log.Printf("waiting for race day at %v\n", t)
 			time.Sleep(diff)
@@ -220,9 +332,18 @@ func runWeekend(s *discordgo.Session, r api.Race) {
 				log.Println(err)
 				return
 			}
-
 			if err := addReaction(s, m.ChannelID, m.ID, racingCarEmoji); err != nil {
 				log.Println(err)
+				return
+			}
+			msg, err := sendMessage(s, guildSportsChannel, fmt.Sprintf(raceDayResponseNow, *r.RaceName))
+			if err != nil {
+				log.Println(err)
+				return
+			}
+			if err := addReaction(s, msg.ChannelID, msg.ID, racingCarEmoji); err != nil {
+				log.Println(err)
+				return
 			}
 			log.Println("Race day complete")
 		}
