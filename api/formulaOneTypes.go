@@ -34,13 +34,21 @@ type (
 	}
 
 	Race struct {
-		Season   *string        `json:"season,omitempty"`
-		Round    *string        `json:"round,omitempty"`
-		Url      *string        `json:"url,omitempty"`
-		RaceName *string        `json:"raceName,omitempty"`
-		Circuit  *CircuitStruct `json:"Circuit,omitempty"`
-		Date     *string        `json:"date,omitempty"`
-		Time     *string        `json:"time,omitempty"`
+		Season         *string        `json:"season,omitempty"`
+		Round          *string        `json:"round,omitempty"`
+		Url            *string        `json:"url,omitempty"`
+		RaceName       *string        `json:"raceName,omitempty"`
+		Circuit        *CircuitStruct `json:"Circuit,omitempty"`
+		FirstPractice  *Session       `json:"FirstPractice,omitempty"`
+		SecondPractice *Session       `json:"SecondPractice,omitempty"`
+		ThirdPractice  *Session       `json:"ThirdPractice,omitempty"`
+		Qualifying     *Session       `json:"Qualifying,omitempty"`
+		*Session
+	}
+
+	Session struct {
+		Date *string `json:"date,omitempty"`
+		Time *string `json:"time,omitempty"`
 	}
 
 	CircuitStruct struct {
