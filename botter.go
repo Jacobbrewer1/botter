@@ -16,7 +16,7 @@ func init() {
 func main() {
 	err := config.ReadConfig()
 	if err != nil {
-		log.Println(err)
+		log.Fatalln(err)
 		return
 	}
 
