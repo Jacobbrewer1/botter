@@ -168,7 +168,7 @@ func runWeekend(s *discordgo.Session, r api.Race) {
 		if diff > 0 {
 			log.Printf("waiting for first practice at %v\n", t)
 			time.Sleep(diff)
-			m, err := sendMessage(s, guildSportsChannel, fmt.Sprintf(genericF1ResponseOneHourTime, practice, *r.Circuit.CircuitName))
+			m, err := sendMessage(s, guildSportsChannel, fmt.Sprintf(genericF1ResponseOneHourTime, firstPractice, *r.Circuit.CircuitName))
 			if err != nil {
 				log.Println(err)
 				return
@@ -181,7 +181,7 @@ func runWeekend(s *discordgo.Session, r api.Race) {
 			t = t.Add(time.Hour)
 			diff = t.Sub(time.Now())
 			time.Sleep(diff)
-			msg, err := sendMessage(s, guildSportsChannel, fmt.Sprintf(genericF1ResponseNow, practice, *r.Circuit.CircuitName))
+			msg, err := sendMessage(s, guildSportsChannel, fmt.Sprintf(genericF1ResponseNow, firstPractice, *r.Circuit.CircuitName))
 			if err != nil {
 				log.Println(err)
 				return
@@ -208,7 +208,7 @@ func runWeekend(s *discordgo.Session, r api.Race) {
 		if diff > 0 {
 			log.Printf("waiting for second practice at %v\n", t)
 			time.Sleep(diff)
-			m, err := sendMessage(s, guildSportsChannel, fmt.Sprintf(genericF1ResponseOneHourTime, practice, *r.Circuit.CircuitName))
+			m, err := sendMessage(s, guildSportsChannel, fmt.Sprintf(genericF1ResponseOneHourTime, secondPractice, *r.Circuit.CircuitName))
 			if err != nil {
 				log.Println(err)
 				return
@@ -221,7 +221,7 @@ func runWeekend(s *discordgo.Session, r api.Race) {
 			t = t.Add(time.Hour)
 			diff = t.Sub(time.Now())
 			time.Sleep(diff)
-			msg, err := sendMessage(s, guildSportsChannel, fmt.Sprintf(genericF1ResponseNow, practice, *r.Circuit.CircuitName))
+			msg, err := sendMessage(s, guildSportsChannel, fmt.Sprintf(genericF1ResponseNow, secondPractice, *r.Circuit.CircuitName))
 			if err != nil {
 				log.Println(err)
 				return
@@ -248,7 +248,7 @@ func runWeekend(s *discordgo.Session, r api.Race) {
 		if diff > 0 {
 			log.Printf("waiting for third practice at %v\n", t)
 			time.Sleep(diff)
-			m, err := sendMessage(s, guildSportsChannel, fmt.Sprintf(genericF1ResponseOneHourTime, practice, *r.Circuit.CircuitName))
+			m, err := sendMessage(s, guildSportsChannel, fmt.Sprintf(genericF1ResponseOneHourTime, thirdPractice, *r.Circuit.CircuitName))
 			if err != nil {
 				log.Println(err)
 				return
@@ -261,7 +261,7 @@ func runWeekend(s *discordgo.Session, r api.Race) {
 			t = t.Add(time.Hour)
 			diff = t.Sub(time.Now())
 			time.Sleep(diff)
-			msg, err := sendMessage(s, guildSportsChannel, fmt.Sprintf(genericF1ResponseNow, practice, *r.Circuit.CircuitName))
+			msg, err := sendMessage(s, guildSportsChannel, fmt.Sprintf(genericF1ResponseNow, thirdPractice, *r.Circuit.CircuitName))
 			if err != nil {
 				log.Println(err)
 				return
