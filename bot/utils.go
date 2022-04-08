@@ -65,7 +65,9 @@ const (
 	genericF1ResponseNow         = "It's %v at the %v starting now"
 	raceDayResponse              = "It's race day at the %v in 1 hours time!"
 	raceDayResponseNow           = "It's race day at the %v right now!"
-	practice                     = "Practice"
+	firstPractice                = "First Practice"
+	secondPractice               = "Second Practice"
+	thirdPractice                = "Third Practice"
 	qualifying                   = "Qualifying"
 	guildSportsChannel           = "811662158303068221"
 )
