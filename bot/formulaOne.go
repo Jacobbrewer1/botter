@@ -127,7 +127,7 @@ func runFormulaOne(s *discordgo.Session) {
 			continue
 		}
 		log.Printf("first practice start %v\n", t)
-		diff := helper.CalculateTimeDifference(t, time.Now().UTC())
+		diff := helper.CalculateTimeDifference(t, time.Now())
 		if diff > 0 {
 			log.Printf("waiting until %v event at %v\n", *race.RaceName, race.GetFridayDate())
 			time.Sleep(diff)
