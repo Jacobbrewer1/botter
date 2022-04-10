@@ -53,7 +53,7 @@ func TestRace_GetFridayDate(t *testing.T) {
 	}
 }
 
-func TestRace_GetDateTime(t *testing.T) {
+func TestRace_GetSessionDateTime(t *testing.T) {
 	tests := []struct {
 		name     string
 		input    Race
