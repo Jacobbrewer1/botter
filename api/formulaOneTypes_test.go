@@ -65,7 +65,7 @@ func TestRace_GetDateTime(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			gotDate := tt.input.GetDateTime()
+			gotDate := tt.input.GetSessionDateTime()
 			if gotDate != tt.expected {
 				t.Errorf("Race.GetDateTime() = %v, expected %v", gotDate, tt.expected)
 			}

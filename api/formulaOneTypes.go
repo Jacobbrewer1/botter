@@ -2,6 +2,7 @@ package api
 
 import (
 	"fmt"
+	"github.com/Jacobbrewer1/botter/helper"
 	"log"
 	"strconv"
 	"strings"
@@ -137,16 +138,25 @@ type (
 	}
 
 	ConstructorStandingsPositionStruct struct {
-		Position     *string             `json:"position"`
-		PositionText *string             `json:"positionText"`
-		Points       *string             `json:"points"`
-		Wins         *string             `json:"wins"`
-		Constructor  *ConstructorsStruct `json:"Constructor"`
+		*StatsStruct
+		Constructor *ConstructorsStruct `json:"Constructor"`
 	}
 )
 
 func (s Session) GetSessionDateTime() string {
-	return fmt.Sprintf("%vT%v", *s.Date, *s.Time)
+	zone, offset := time.Now().Zone()
+	if zone == "GMT" || zone == "UTC" {
+		return fmt.Sprintf("%vT%v", *s.Date, *s.Time)
+	}
+	u, err := time.Parse("15:04:05Z", *s.Time)
+	if err != nil {
+		log.Println(err)
+		return fmt.Sprintf("%vT%v", *s.Date, *s.Time)
+	}
+	dur := time.Duration(offset) * time.Second
+	u = u.Add(dur)
+	t := u.Format(helper.TimeFormatLayout)
+	return fmt.Sprintf("%vT%v", *s.Date, strings.Split(t, "T")[1])
 }
 
 func (s DriverStandingsListsStruct) GetPosition(p int) *DriverStandingPositionStruct {
@@ -189,6 +199,6 @@ func (r Race) GetSaturdayDate() string {
 	return date
 }
 
-func (r Race) GetDateTime() string {
+func (r Race) GetSessionDateTime() string {
 	return fmt.Sprintf("%vT%v", *r.Date, *r.Time)
 }

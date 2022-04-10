@@ -10,22 +10,18 @@ import (
 	"time"
 )
 
-var (
-	layout = "2006-01-02T15:04:05Z"
-)
-
 func nextF1Race(s *discordgo.Session, channelId string) {
 	race, err := api.GetNextRace()
 	if err != nil {
 		log.Println(err)
 		return
 	}
-	t, err := time.Parse(layout, race.GetDateTime())
+	t, err := time.Parse(helper.TimeFormatLayout, race.Session.GetSessionDateTime())
 	if err != nil {
 		log.Println(err)
 		return
 	}
-	if _, err := sendMessage(s, channelId, fmt.Sprintf(nextRace.response, *race.RaceName, t.Format(time.RFC1123))); err != nil {
+	if _, err := sendMessage(s, channelId, fmt.Sprintf(nextRace.response, *race.RaceName, t.Format(time.Stamp))); err != nil {
 		log.Println(err)
 		return
 	}
@@ -121,13 +117,13 @@ func runFormulaOne(s *discordgo.Session) {
 			log.Println(err)
 			continue
 		}
-		t, err := time.Parse(layout, race.FirstPractice.GetSessionDateTime())
+		t, err := time.Parse(helper.TimeFormatLayout, race.FirstPractice.GetSessionDateTime())
 		if err != nil {
 			log.Println(err)
 			continue
 		}
 		log.Printf("first practice start %v\n", t)
-		diff := helper.CalculateTimeDifference(t, time.Now().UTC())
+		diff := helper.CalculateTimeDifference(t, time.Now())
 		if diff > 0 {
 			log.Printf("waiting until %v event at %v\n", *race.RaceName, race.GetFridayDate())
 			time.Sleep(diff)
@@ -136,7 +132,7 @@ func runFormulaOne(s *discordgo.Session) {
 			go runWeekend(s, race)
 		}
 		if diff < 0 {
-			d, err := time.Parse(layout, race.GetDateTime())
+			d, err := time.Parse(helper.TimeFormatLayout, race.GetSessionDateTime())
 			if err != nil {
 				log.Println(err)
 				continue
@@ -158,7 +154,7 @@ func runWeekend(s *discordgo.Session, r api.Race) {
 	// First practice
 	go func() {
 		defer waiter.Done()
-		t, err := time.Parse(layout, r.FirstPractice.GetSessionDateTime())
+		t, err := time.Parse(helper.TimeFormatLayout, r.FirstPractice.GetSessionDateTime())
 		if err != nil {
 			log.Println(err)
 			return
@@ -198,7 +194,7 @@ func runWeekend(s *discordgo.Session, r api.Race) {
 	// Second practice
 	go func() {
 		defer waiter.Done()
-		t, err := time.Parse(layout, r.SecondPractice.GetSessionDateTime())
+		t, err := time.Parse(helper.TimeFormatLayout, r.SecondPractice.GetSessionDateTime())
 		if err != nil {
 			log.Println(err)
 			return
@@ -238,7 +234,7 @@ func runWeekend(s *discordgo.Session, r api.Race) {
 	// Third practice method
 	go func() {
 		defer waiter.Done()
-		t, err := time.Parse(layout, r.ThirdPractice.GetSessionDateTime())
+		t, err := time.Parse(helper.TimeFormatLayout, r.ThirdPractice.GetSessionDateTime())
 		if err != nil {
 			log.Println(err)
 			return
@@ -278,7 +274,7 @@ func runWeekend(s *discordgo.Session, r api.Race) {
 	// Qualifying method
 	go func() {
 		defer waiter.Done()
-		t, err := time.Parse(layout, r.Qualifying.GetSessionDateTime())
+		t, err := time.Parse(helper.TimeFormatLayout, r.Qualifying.GetSessionDateTime())
 		if err != nil {
 			log.Println(err)
 			return
@@ -317,7 +313,7 @@ func runWeekend(s *discordgo.Session, r api.Race) {
 	// Racing method
 	go func() {
 		defer waiter.Done()
-		t, err := time.Parse(layout, r.Session.GetSessionDateTime())
+		t, err := time.Parse(helper.TimeFormatLayout, r.Session.GetSessionDateTime())
 		t = t.Add(-time.Hour)
 		if err != nil {
 			log.Println(err)
