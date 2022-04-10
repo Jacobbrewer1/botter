@@ -97,3 +97,14 @@ func CalculateTimeDifference(t, tTwo time.Time) time.Duration {
 	log.Println("time difference ", diff)
 	return diff
 }
+
+func CalculateTimeDifferenceNow(t time.Time) time.Duration {
+	n := time.Now().UTC()
+	zone, offset := time.Now().Zone()
+	if zone != "GMT" && zone != "UTC" {
+		n = n.Add(time.Second * time.Duration(offset))
+	}
+	diff := t.Sub(n)
+	log.Println("time difference ", diff)
+	return diff
+}

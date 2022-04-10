@@ -69,5 +69,6 @@ const (
 	secondPractice               = "Second Practice"
 	thirdPractice                = "Third Practice"
 	qualifying                   = "Qualifying"
+	sprint                       = "the Sprint Race"
 	guildSportsChannel           = "811662158303068221"
 )
