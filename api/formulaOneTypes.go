@@ -43,7 +43,7 @@ type (
 		FirstPractice  *Session       `json:"FirstPractice,omitempty"`
 		SecondPractice *Session       `json:"SecondPractice,omitempty"`
 		ThirdPractice  *Session       `json:"ThirdPractice,omitempty"`
-		Sprint         *Session       `json:"Sprint"`
+		Sprint         *Session       `json:"Sprint,omitempty"`
 		Qualifying     *Session       `json:"Qualifying,omitempty"`
 		*Session
 	}
@@ -140,7 +140,7 @@ type (
 
 	ConstructorStandingsPositionStruct struct {
 		*StatsStruct
-		Constructor *ConstructorsStruct `json:"Constructor"`
+		Constructor *ConstructorsStruct `json:"Constructor,omitempty"`
 	}
 )
 
