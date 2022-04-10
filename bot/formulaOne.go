@@ -170,7 +170,7 @@ func runWeekend(session *discordgo.Session, raceStruct api.Race) {
 		if diff > 0 {
 			log.Printf("waiting for first practice at %v\n", t)
 			time.Sleep(diff)
-			m, err := sendMessage(s, guildSportsChannel, fmt.Sprintf(genericF1ResponseOneHourTime, firstPractice, *r.Circuit.CircuitName))
+			m, err := sendMessage(s, guildSportsChannel, fmt.Sprintf(genericF1ResponseOneHourTime, firstPractice, *r.RaceName))
 			if err != nil {
 				log.Println(err)
 				return
@@ -183,7 +183,7 @@ func runWeekend(session *discordgo.Session, raceStruct api.Race) {
 			t = t.Add(time.Hour)
 			diff = helper.CalculateTimeDifferenceNow(t)
 			time.Sleep(diff)
-			msg, err := sendMessage(s, guildSportsChannel, fmt.Sprintf(genericF1ResponseNow, firstPractice, *r.Circuit.CircuitName))
+			msg, err := sendMessage(s, guildSportsChannel, fmt.Sprintf(genericF1ResponseNow, firstPractice, *r.RaceName))
 			if err != nil {
 				log.Println(err)
 				return
@@ -216,7 +216,7 @@ func runWeekend(session *discordgo.Session, raceStruct api.Race) {
 		if diff > 0 {
 			log.Printf("waiting for second practice at %v\n", t)
 			time.Sleep(diff)
-			m, err := sendMessage(s, guildSportsChannel, fmt.Sprintf(genericF1ResponseOneHourTime, secondPractice, *r.Circuit.CircuitName))
+			m, err := sendMessage(s, guildSportsChannel, fmt.Sprintf(genericF1ResponseOneHourTime, secondPractice, *r.RaceName))
 			if err != nil {
 				log.Println(err)
 				return
@@ -229,7 +229,7 @@ func runWeekend(session *discordgo.Session, raceStruct api.Race) {
 			t = t.Add(time.Hour)
 			diff = helper.CalculateTimeDifferenceNow(t)
 			time.Sleep(diff)
-			msg, err := sendMessage(s, guildSportsChannel, fmt.Sprintf(genericF1ResponseNow, secondPractice, *r.Circuit.CircuitName))
+			msg, err := sendMessage(s, guildSportsChannel, fmt.Sprintf(genericF1ResponseNow, secondPractice, *r.RaceName))
 			if err != nil {
 				log.Println(err)
 				return
@@ -262,7 +262,7 @@ func runWeekend(session *discordgo.Session, raceStruct api.Race) {
 		if diff > 0 {
 			log.Printf("waiting for third practice at %v\n", t)
 			time.Sleep(diff)
-			m, err := sendMessage(s, guildSportsChannel, fmt.Sprintf(genericF1ResponseOneHourTime, thirdPractice, *r.Circuit.CircuitName))
+			m, err := sendMessage(s, guildSportsChannel, fmt.Sprintf(genericF1ResponseOneHourTime, thirdPractice, *r.RaceName))
 			if err != nil {
 				log.Println(err)
 				return
@@ -275,7 +275,7 @@ func runWeekend(session *discordgo.Session, raceStruct api.Race) {
 			t = t.Add(time.Hour)
 			diff = helper.CalculateTimeDifferenceNow(t)
 			time.Sleep(diff)
-			msg, err := sendMessage(s, guildSportsChannel, fmt.Sprintf(genericF1ResponseNow, thirdPractice, *r.Circuit.CircuitName))
+			msg, err := sendMessage(s, guildSportsChannel, fmt.Sprintf(genericF1ResponseNow, thirdPractice, *r.RaceName))
 			if err != nil {
 				log.Println(err)
 				return
@@ -308,7 +308,7 @@ func runWeekend(session *discordgo.Session, raceStruct api.Race) {
 		if diff > 0 {
 			log.Printf("waiting for qualifying at %v\n", t)
 			time.Sleep(diff)
-			m, err := sendMessage(s, guildSportsChannel, fmt.Sprintf(genericF1ResponseOneHourTime, qualifying, *r.Circuit.CircuitName))
+			m, err := sendMessage(s, guildSportsChannel, fmt.Sprintf(genericF1ResponseOneHourTime, qualifying, *r.RaceName))
 			if err != nil {
 				log.Println(err)
 				return
@@ -321,7 +321,7 @@ func runWeekend(session *discordgo.Session, raceStruct api.Race) {
 			t = t.Add(time.Hour)
 			diff = helper.CalculateTimeDifferenceNow(t)
 			time.Sleep(diff)
-			msg, err := sendMessage(s, guildSportsChannel, fmt.Sprintf(genericF1ResponseNow, qualifying, *r.Circuit.CircuitName))
+			msg, err := sendMessage(s, guildSportsChannel, fmt.Sprintf(genericF1ResponseNow, qualifying, *r.RaceName))
 			if err != nil {
 				log.Println(err)
 				return
@@ -408,6 +408,10 @@ func runWeekend(session *discordgo.Session, raceStruct api.Race) {
 				log.Println(err)
 				return
 			}
+
+			t = t.Add(time.Hour)
+			diff = helper.CalculateTimeDifferenceNow(t)
+			time.Sleep(diff)
 			msg, err := sendMessage(s, guildSportsChannel, fmt.Sprintf(raceDayResponseNow, *r.RaceName))
 			if err != nil {
 				log.Println(err)
