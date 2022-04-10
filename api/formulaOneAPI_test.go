@@ -79,7 +79,7 @@ func TestGetDriverStandings(t *testing.T) {
 	}
 
 	tests := []struct {
-		name     string
+		name string
 	}{
 		{"test one"},
 		{"test two"},
@@ -108,7 +108,7 @@ func TestGetConstructorStandings(t *testing.T) {
 	}
 
 	tests := []struct {
-		name     string
+		name string
 	}{
 		{"test one"},
 		{"test two"},
@@ -123,4 +123,3 @@ func TestGetConstructorStandings(t *testing.T) {
 		})
 	}
 }
-
